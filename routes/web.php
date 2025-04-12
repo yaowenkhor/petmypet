@@ -57,7 +57,6 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function (
         Route::get('admin/home', 'index')->name('admin.home');
     });
 
-
 });
 
 Route::controller(App\Http\Controllers\AdopterController::class)->group(function () {
@@ -65,7 +64,6 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
     Route::group(['middleware' => 'auth:adopter'], function () {
         Route::get('adopter/home', 'index')->name('adopter.home');
     });
-
 
 });
 
@@ -75,7 +73,15 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
         Route::get('organization/home', 'index')->name('organization.home');
     });
 
-
 });
+
+Route::controller(App\Http\Controllers\PetController::class)->group(function () {
+
+    Route::group(['middleware' => 'auth:organization'], function(){
+        Route::post('pet/create', 'store')->name('pet.create');
+        Route::delete('pet/delete/{id}', 'destroy')->name('pet.delete');
+    });
+});
+
 
 

@@ -112,8 +112,8 @@ class RegisterController extends Controller
             return redirect('adopter/login')->with('success', 'Yay, Adopter registered successfully! Please login to continue !');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
 
@@ -147,8 +147,8 @@ class RegisterController extends Controller
             return redirect('organization/login')->with('success', 'Yay, Organization registered successfully! Please login to continue !');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
 
