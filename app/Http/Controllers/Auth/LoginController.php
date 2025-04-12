@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
+
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,5 +39,95 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
+        $this->middleware('guest:adopter')->except('logout');
+        $this->middleware('guest:organization')->except('logout');
+
+    }
+
+    public function displayAdminLoginForm()
+    {
+        return view('auth.login', ['url' => 'admin']);
+    }
+
+    public function displayAdopterLoginForm()
+    {
+        return view('auth.login', ['url' => 'adopter']);
+    }
+
+    public function displayOrganizationLoginForm()
+    {
+        return view('auth.login', ['url' => 'organization']);
+    }
+
+
+    public function loginAdmin(Request $req)
+    {
+        $this->validate($req, [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+        if (
+            Auth::guard('admin')->attempt([
+                'email' => $req->email,
+                'password' => $req->password,
+                'role' => 'admin',
+            ], $req->get('remember'))
+        ) {
+            //For checking purpose
+            //dd(Auth::guard('admin')->user()->role);
+            return redirect()->intended('admin/home')->with('success', 'Yay, Login successful!');
+        }
+        return redirect()->back()->withInput($req->only('email', 'remember'))->withErrors([
+            'error' => 'Oops! Invalid credentials. Please try again.',
+        ]);
+    }
+
+    public function loginAdopter(Request $req)
+    {
+        $this->validate($req, [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        if (
+            Auth::guard('adopter')->attempt([
+                'email' => $req->email,
+                'password' => $req->password,
+                'role' => 'adopter',
+            ], $req->get('remember'))
+        ) {
+            //For checking purpose
+            //dd(Auth::guard('adopter')->user()->role);
+            return redirect()->intended('adopter/home')->with('success', 'Yay, Login successful!');
+
+        }
+        return redirect()->back()->withInput($req->only('email', 'remember'))->withErrors([
+            'error' => 'Oops! Invalid credentials. Please try again. ',
+        ]);
+    }
+    public function loginOrganization(Request $req)
+    {
+        $this->validate($req, [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ]);
+
+        if (
+            Auth::guard('organization')->attempt([
+                'email' => $req->email,
+                'password' => $req->password,
+                'role' => 'organization',
+            ], $req->get('remember'))
+        ) {
+            //For checking purpose
+            //dd(Auth::guard('organization')->user()->role);
+            //return redirect()->intended('adopter/dashboard');
+            return redirect()->intended('organization/home')->with('success', 'Yay, Login successful!');
+
+        }
+        return redirect()->back()->withInput($req->only('email', 'remember'))->withErrors([
+            'error' => 'Oops! Invalid credentials. Please try again. ',
+        ]);
     }
 }
