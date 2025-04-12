@@ -49,4 +49,11 @@ class PetPolicy
 
     }
 
+    public function update(User $user , Pet $pet): bool
+    {
+        $organization = $user->organization;
+        return $organization->id === $pet->organization_id;
+
+    }
+
 }

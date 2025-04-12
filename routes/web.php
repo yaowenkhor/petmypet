@@ -80,6 +80,9 @@ Route::controller(App\Http\Controllers\PetController::class)->group(function () 
     Route::group(['middleware' => 'auth:organization'], function(){
         Route::post('pet/create', 'store')->name('pet.create');
         Route::delete('pet/delete/{id}', 'destroy')->name('pet.delete');
+
+        Route::get('pet/edit/{id}', 'displayPetUpdateForm')->name('pet.update');
+        Route::put('pet/edit/{id}', 'update')->name('pet.update.submit');
     });
 });
 

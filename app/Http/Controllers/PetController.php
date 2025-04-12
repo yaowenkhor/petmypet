@@ -108,4 +108,62 @@ class PetController extends Controller
         }
     }
 
+    public function displayPetUpdateForm($id)
+    {
+        $pet = Pet::findOrFail($id);
+        $images = $pet->images;
+        $this->authorize('update', $pet);
+
+        return view("organization.editPet", compact('pet', 'images'));
+    }
+
+    public function update($id, Request $req)
+    {
+        $pet = Pet::findOrFail($id);
+        $this->authorize('update', $pet);
+
+        try {
+            $data = $req->all();
+            $this->validator($data)->validate();
+
+            if ($req->hasFile('image_path')) {
+
+                $req->validate([
+                    'image_path.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
+
+                $images = $req->file('image_path');// This an array of images , use image_path[] in the form
+
+                if (count($images) > 4) {
+                    //return response()->json(['error' => 'You can upload a maximum of 4 images.'], 400);
+                    return redirect()->back()->with('error', 'Ehh, You can upload a maximum of 4 images.');
+                }
+
+                if ($pet->images && $pet->images->count() > 0) {
+                    foreach ($pet->images as $image) {
+                        Storage::disk('public')->delete($image->image_path);
+                        $image->delete();
+                    }
+                }
+
+                foreach ($images as $image) {
+                    $path = $image->store('pet_images', 'public');
+                    PetsImage::create([
+                        'pet_id' => $pet->id,
+                        'image_path' => $path,
+                    ]);
+                }
+            }
+            $pet->update($data);
+
+            return response()->json(['success' => 'Yup! Your pet has been updated successfully'], 200);
+            //return redirect()->route('pets.index')->with('success', 'Yup! Your pet has been updated successfully');
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 500);
+            //return redirect()->back()->with('error', 'Oops! We couldn’t update your pet. Give it another shot!');
+        }
+
+    }
+
+
 }
