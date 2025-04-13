@@ -17,12 +17,17 @@ class PetPolicy
      * @return void
      */
 
-    public function before(User $user): bool
+    public function before(User $user): ?bool
     {
-        if($user->role == 'organization') {
-            return true;
+        if($user->role != 'organization') {
+            return false;
         }
-        return false;
+        return null;
+    }
+
+    public function view(User $user, Pet $pet): bool{
+        $organization = $user->organization;
+        return $organization->id === $pet->organization_id;
     }
 
     public function create(User $user): bool

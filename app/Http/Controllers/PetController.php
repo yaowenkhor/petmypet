@@ -14,7 +14,7 @@ class PetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:organization')->except('index', 'show');
+        $this->middleware('auth:organization')->except('index', 'show', 'showDetails', 'search');
     }
 
     protected function validator(array $data)
@@ -31,8 +31,69 @@ class PetController extends Controller
         ]);
     }
 
+    public function index()
+    {
+        $pets = Pet::with('images')->get();
+        return response()->json($pets);
+        //return view('', compact(''));
+    }
 
-    public function create(Request $req)
+    public function search(Request $req)
+    {
+        $search_term = $req->query('term');
+
+        $age_filter = $req->query('age') ? $req->query('age') : null;
+        $status_filter = $req->query('status') ? $req->query('status') : null;
+
+        $pets = Pet::query();
+
+        if ($search_term != null) {
+            $pets->where(function ($q) use ($search_term) {
+                $q->where('name', 'LIKE', '%' . $search_term . '%')
+                    ->orWhere('species', 'LIKE', '%' . $search_term . '%')
+                    ->orWhere('breed', 'LIKE', '%' . $search_term . '%')
+                    ->orWhere('location', 'LIKE', '%' . $search_term . '%')
+                    ->orWhere('temperament', 'LIKE', '%' . $search_term . '%')
+                    ->orWhere('medical_history', 'LIKE', '%' . $search_term . '%')
+                    ->orWhere('size', 'LIKE', '%' . $search_term . '%', )
+                    ->orWhere('age', 'LIKE', '%' . $search_term . '%');
+            });
+        }
+
+        if ($age_filter != null) {
+            $pets->orderBy('age', $age_filter);
+        }
+
+        if ($status_filter != null) {
+            $pets->where('status', $status_filter);
+        }
+
+        $pets = $pets->with('images')->get();
+
+        return response()->json($pets);
+        //return view('pets.index', compact('pets'));
+    }
+
+    public function show()
+    {
+        $user = Auth::user();
+        $organization = $user->organization;
+
+        $pets = $organization->pets()->with('images')->get();
+
+        return response()->json($pets);
+        //return view('pets.index', compact('pets'));
+    }
+
+    public function showDetails($id)
+    {
+        $pet = Pet::with('images')->findOrFail($id);
+        return response()->json($pet);
+        //return view('pets.show', compact('pet'));
+    }
+
+
+    public function create()
     {
         $this->authorize('create', Pet::class);
         //return view('pets.create');

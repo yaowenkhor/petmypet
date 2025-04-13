@@ -83,8 +83,17 @@ Route::controller(App\Http\Controllers\PetController::class)->group(function () 
 
         Route::get('pet/edit/{id}', 'displayPetUpdateForm')->name('pet.update');
         Route::put('pet/edit/{id}', 'update')->name('pet.update.submit');
+
+        Route::get('pet/organization', 'show')->name('pet.show');
     });
+
+    Route::get('pets/all', 'index')->name('pet.index');
+    Route::get('pets/search', 'search')->name('pet.search');
+
+    Route::get('pet/details/{id}', 'showDetails')->name('pet.details');
 });
+
+
 
 
 
