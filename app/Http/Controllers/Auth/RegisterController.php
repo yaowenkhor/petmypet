@@ -57,6 +57,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',],
+            'phone_number' => ['required', 'string', 'max:15'],
         ],[
             'password.regex' => 'Password must contain at least one letter, one number, and one special character.',
         ]);
@@ -112,8 +113,8 @@ class RegisterController extends Controller
             return redirect('adopter/login')->with('success', 'Yay, Adopter registered successfully! Please login to continue !');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
 
@@ -147,8 +148,8 @@ class RegisterController extends Controller
             return redirect('organization/login')->with('success', 'Yay, Organization registered successfully! Please login to continue !');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
 

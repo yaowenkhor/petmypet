@@ -44,4 +44,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function organization()
+    {
+        return $this->hasOne(Organization::class, 'user_id', 'id');
+    }
+    public function adopter()
+    {
+        return $this->hasOne(Adopter::class);
+    }
 }

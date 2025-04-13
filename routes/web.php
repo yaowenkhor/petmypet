@@ -55,8 +55,10 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function (
 
     Route::group(['middleware' => 'auth:admin'], function () {
         Route::get('admin/home', 'index')->name('admin.home');
-    });
 
+        Route::post('admin/approve/{id}', 'approveOrganization')->name('admin.approve');
+        Route::post('admin/reject/{id}', 'rejectOrganization')->name('admin.reject');
+    });
 
 });
 
@@ -66,16 +68,39 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
         Route::get('adopter/home', 'index')->name('adopter.home');
     });
 
-
 });
 
 Route::controller(App\Http\Controllers\OrganizationController::class)->group(function () {
 
     Route::group(['middleware' => 'auth:organization'], function () {
         Route::get('organization/home', 'index')->name('organization.home');
+        Route::get('organization/edit', 'displayEditProfileForm')->name('organization.edit.form');
+
+        Route::post('organization/reapply', 'reapply')->name('organization.reapply');
+        Route::put('organization/edit', 'edit')->name('organization.edit');
     });
 
-
 });
+
+Route::controller(App\Http\Controllers\PetController::class)->group(function () {
+
+    Route::group(['middleware' => 'auth:organization'], function(){
+        Route::post('pet/create', 'store')->name('pet.create');
+        Route::delete('pet/delete/{id}', 'destroy')->name('pet.delete');
+
+        Route::get('pet/edit/{id}', 'displayPetUpdateForm')->name('pet.update');
+        Route::put('pet/edit/{id}', 'update')->name('pet.update.submit');
+
+        Route::get('pet/organization', 'show')->name('pet.show');
+    });
+
+    Route::get('pets/all', 'index')->name('pet.index');
+    Route::get('pets/search', 'search')->name('pet.search');
+
+    Route::get('pet/details/{id}', 'displayDetails')->name('pet.details');
+});
+
+
+
 
 
