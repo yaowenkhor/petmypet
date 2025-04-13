@@ -55,6 +55,9 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function (
 
     Route::group(['middleware' => 'auth:admin'], function () {
         Route::get('admin/home', 'index')->name('admin.home');
+
+        Route::post('admin/approve/{id}', 'approveOrganization')->name('admin.approve');
+        Route::post('admin/reject/{id}', 'rejectOrganization')->name('admin.reject');
     });
 
 });
@@ -71,6 +74,10 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
 
     Route::group(['middleware' => 'auth:organization'], function () {
         Route::get('organization/home', 'index')->name('organization.home');
+        Route::get('organization/edit', 'displayEditProfileForm')->name('organization.edit.form');
+
+        Route::post('organization/reapply', 'reapply')->name('organization.reapply');
+        Route::put('organization/edit', 'edit')->name('organization.edit');
     });
 
 });
