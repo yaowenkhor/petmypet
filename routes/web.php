@@ -90,7 +90,7 @@ Route::controller(App\Http\Controllers\PetController::class)->group(function () 
     Route::get('pets/all', 'index')->name('pet.index');
     Route::get('pets/search', 'search')->name('pet.search');
 
-    Route::get('pet/details/{id}', 'showDetails')->name('pet.details');
+    Route::get('pet/details/{id}', 'displayDetails')->name('pet.details');
 });
 
 

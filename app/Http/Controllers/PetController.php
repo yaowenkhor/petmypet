@@ -14,7 +14,7 @@ class PetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:organization')->except('index', 'show', 'showDetails', 'search');
+        $this->middleware('auth:organization')->except('index', 'showDetails', 'search');
     }
 
     protected function validator(array $data)
@@ -36,6 +36,13 @@ class PetController extends Controller
         $pets = Pet::with('images')->get();
         return response()->json($pets);
         //return view('', compact(''));
+    }
+
+    public function displayDetails($id)
+    {
+        $pet = Pet::with('images')->findOrFail($id);
+        return response()->json($pet);
+        //return view('pets.show', compact('pet'));
     }
 
     public function search(Request $req)
@@ -84,14 +91,6 @@ class PetController extends Controller
         return response()->json($pets);
         //return view('pets.index', compact('pets'));
     }
-
-    public function showDetails($id)
-    {
-        $pet = Pet::with('images')->findOrFail($id);
-        return response()->json($pet);
-        //return view('pets.show', compact('pet'));
-    }
-
 
     public function create()
     {
