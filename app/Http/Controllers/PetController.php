@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Pet;
 use App\Models\PetsImage;
-use Auth;
 use Storage;
+use App\Models\ReportedPost;
+use Illuminate\Support\Facades\Auth;
 
 class PetController extends Controller
 {
@@ -224,6 +225,28 @@ class PetController extends Controller
         }
 
     }
+
+        public function report($id)
+    {
+        $adopterId = auth()->id();
+
+        // Prevent duplicate report
+        $alreadyReported = ReportedPost::where('adopter_id', $adopterId)->where('pet_id', $id)->exists();
+
+        if ($alreadyReported) {
+            return back()->with('info', 'You have already reported this post.');
+        }
+
+        ReportedPost::create([
+            'adopter_id' => $adopterId,
+            'pet_id' => $id,
+            'reason' => 'Reported via quick action', // default reason
+        ]);
+
+        return back()->with('success', 'Post has been reported. Thank you.');
+    }
+
+
 
 
 }

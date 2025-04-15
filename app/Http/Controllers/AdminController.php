@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Organization;
 use App\Models\OrganizationApproval;
 use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {

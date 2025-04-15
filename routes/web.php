@@ -68,6 +68,9 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
         Route::get('adopter/home', 'index')->name('adopter.home');
     });
 
+    // submit adoption application
+    Route::post('adoption/apply', 'submitApplication')->name('adoption.submit');
+
 });
 
 Route::controller(App\Http\Controllers\OrganizationController::class)->group(function () {
@@ -98,6 +101,10 @@ Route::controller(App\Http\Controllers\PetController::class)->group(function () 
     Route::get('pets/search', 'search')->name('pet.search');
 
     Route::get('pet/details/{id}', 'displayDetails')->name('pet.details');
+
+    // Adopter reports a pet post
+    Route::post('pet/{id}/report', [App\Http\Controllers\PetController::class, 'report'])->middleware('auth:adopter') ->name('pet.report');
+
 });
 
 
