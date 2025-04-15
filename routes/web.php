@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,10 +67,21 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
 
     Route::group(['middleware' => 'auth:adopter'], function () {
         Route::get('adopter/home', 'index')->name('adopter.home');
+
+        // View user's profile
+        Route::get('adopter/profile', 'showProfile')->name('adopter.profile');
+
+        // Show profile edit form
+        Route::get('adopter/profile/{id}', 'showEditProfile')->name('adopter.profile.editForm');
+
+        // Submit profile update
+        Route::post('adopter/profile/{id}', 'editProfile')->name('adopter.profile.update');
+
+        // submit adoption application
+        Route::post('adopter/apply', 'submitApplication')->name('adoption.submit');
     });
 
-    // submit adoption application
-    Route::post('adoption/apply', 'submitApplication')->name('adoption.submit');
+    
 
 });
 
