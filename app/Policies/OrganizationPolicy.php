@@ -20,6 +20,10 @@ class OrganizationPolicy
         //
     }
 
+    public function view(User $user, Organization $organization){
+        return $user->id === $organization->user_id;
+    }
+
     public function update(User $user, Organization $organization){
         return $user->id === $organization->user_id;
     }

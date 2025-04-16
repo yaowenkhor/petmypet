@@ -17,15 +17,21 @@ class PetPolicy
      * @return void
      */
 
-    public function before(User $user): ?bool
+    public function before(User $user, string $ability): ?bool
     {
-        if($user->role != 'organization') {
+
+        if ($ability == 'report') {
+            return null;
+        }
+
+        if ($user->role != 'organization') {
             return false;
         }
         return null;
     }
 
-    public function view(User $user, Pet $pet): bool{
+    public function view(User $user, Pet $pet): bool
+    {
         $organization = $user->organization;
         return $organization->id === $pet->organization_id;
     }
@@ -47,18 +53,23 @@ class PetPolicy
 
     }
 
-    public function delete(User $user , Pet $pet): bool
+    public function delete(User $user, Pet $pet): bool
     {
         $organization = $user->organization;
         return $organization->id === $pet->organization_id;
 
     }
 
-    public function update(User $user , Pet $pet): bool
+    public function update(User $user, Pet $pet): bool
     {
         $organization = $user->organization;
         return $organization->id === $pet->organization_id;
 
+    }
+
+    public function report(User $user, Pet $pet)
+    {
+        return $user->role === 'adopter';
     }
 
 }
