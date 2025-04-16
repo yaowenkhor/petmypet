@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Organization;
 use App\Models\Pet;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

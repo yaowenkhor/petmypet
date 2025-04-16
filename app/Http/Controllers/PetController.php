@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Pet;
