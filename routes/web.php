@@ -93,7 +93,11 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
 
         Route::post('organization/reapply', 'reapply')->name('organization.reapply');
         Route::put('organization/edit', 'edit')->name('organization.edit');
+
+        Route::get('organization/adoptionRequests', 'viewAdoptionRequests')->name('organization.adoptionRequests');
+        Route::post('organization/adoptionRequests/{id}/update','updateAdoptionStatus')->name('organization.updateAdoptionStatus');
     });
+
 
 });
 

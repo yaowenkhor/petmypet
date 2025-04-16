@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Organization;
 use Illuminate\Support\Facades\Validator;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Models\AdoptionApplication;
 
 class OrganizationController extends Controller
 {
@@ -87,4 +88,68 @@ class OrganizationController extends Controller
             //return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
+
+    //view all requests
+    public function viewAdoptionRequests()
+    {
+        $organization = Auth::guard('organization')->user()->organization;
+
+        // Get all requests for pets under this organization
+        $requests = AdoptionApplication::where('organization_id', $organization->id)->with(['pet', 'adopter'])->get();
+
+        return view('organization.adoptionRequests', ['requests' => $requests]);
+    }
+
+    public function updateAdoptionStatus(Request $request, $id)
+    {
+        // Validate incoming request
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+            'decision_message' => 'nullable|string|max:1000',
+        ]);
+
+        // Find the adoption application by ID
+        $adoption = AdoptionApplication::with('pet')->find($id);
+
+        // Check if the application exists
+        if (!$adoption) {
+            return redirect('organization/adoptionRequests')->with('error', 'Adoption request not found.');
+        }
+
+        // Get logged-in organization ID
+        $organizationId = Auth::guard('organization')->user()->organization->id;
+
+        // Ensure the organization owns the application
+        if ($adoption->organization_id !== $organizationId) {
+            return redirect('organization//adoptionRequests')->with('error', 'Unauthorized access.');
+        }
+
+        // Update the application status and optional message
+        $adoption->status = $request->status;
+        $adoption->decision_message = $request->decision_message;
+        $adoption->save();
+
+        // If approved, mark the pet as adopted and reject other pending requests
+        if ($request->status === 'approved') {
+            $pet = $adoption->pet;
+
+            // Update pet status if it's still available
+            if ($pet && $pet->status !== 'adopted') {
+                $pet->status = 'adopted';
+                $pet->save();
+            }
+
+            // Auto-reject all other pending applications for this pet
+            AdoptionApplication::where('pet_id', $pet->id)
+                ->where('id', '!=', $adoption->id)
+                ->where('status', 'pending')
+                ->update(['status' => 'rejected']);
+        }
+
+        // Return success message
+        return redirect('organizatio/adoptionRequests')->with('success', 'Adoption request updated successfully.');
+    }
+
+
+
 }
