@@ -11,6 +11,11 @@ use Storage;
 
 class AdopterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:adopter');
+    }
+
     public function index()
     {
         return view("adopter.home");
