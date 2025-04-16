@@ -119,7 +119,7 @@ Route::controller(App\Http\Controllers\PetController::class)->group(function () 
     Route::get('pet/details/{id}', 'displayDetails')->name('pet.details');
 
     // Adopter reports a pet post
-    Route::post('pet/{id}/report', [App\Http\Controllers\PetController::class, 'report'])->middleware('auth:adopter') ->name('pet.report');
+    Route::post('pet/{id}/report', 'report')->middleware('auth:adopter') ->name('pet.report');
 
 });
 

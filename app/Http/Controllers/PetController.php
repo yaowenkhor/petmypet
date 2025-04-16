@@ -15,7 +15,7 @@ class PetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:organization')->except('index', 'showDetails', 'search');
+        $this->middleware('auth:organization')->except('index', 'showDetails', 'search', 'report');
     }
 
     protected function validator(array $data)
@@ -178,7 +178,7 @@ class PetController extends Controller
         return view("organization.editPet", compact('pet', 'images'));
     }
 
-    public function update($id, Request $req)
+    public function update(Request $req, $id)
     {
         $pet = Pet::findOrFail($id);
         $this->authorize('update', $pet);
@@ -226,27 +226,27 @@ class PetController extends Controller
 
     }
 
-        public function report($id)
+    public function report(Request $req, $id)
     {
+        $pet = Pet::find($id);
+
+        $this->authorize('report', $pet);
+
         $adopterId = auth()->id();
 
         // Prevent duplicate report
         $alreadyReported = ReportedPost::where('adopter_id', $adopterId)->where('pet_id', $id)->exists();
 
         if ($alreadyReported) {
-            return back()->with('info', 'You have already reported this post.');
+            return back()->with('error', 'You have already reported this post.');
         }
 
         ReportedPost::create([
             'adopter_id' => $adopterId,
             'pet_id' => $id,
-            'reason' => 'Reported via quick action', // default reason
+            'reason' => $req->reason,
         ]);
 
         return back()->with('success', 'Post has been reported. Thank you.');
     }
-
-
-
-
 }
