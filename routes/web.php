@@ -72,13 +72,13 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
         Route::get('adopter/profile', 'showProfile')->name('adopter.profile');
 
         // Show profile edit form
-        Route::get('adopter/profile/{id}', 'showEditProfile')->name('adopter.profile.editForm');
+        Route::get('adopter/profile', 'showEditProfile')->name('adopter.profile.editForm');
 
         // Submit profile update
-        Route::post('adopter/profile/{id}', 'editProfile')->name('adopter.profile.update');
+        Route::put('adopter/edit', 'editProfile')->name('adopter.profile.update');
 
         // submit adoption application
-        Route::post('adopter/apply', 'submitApplication')->name('adoption.submit');
+        Route::post('adopter/apply/{id}', 'submitApplication')->name('adoption.submit');
     });
 
     
@@ -95,7 +95,7 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
         Route::put('organization/edit', 'edit')->name('organization.edit');
 
         Route::get('organization/adoptionRequests', 'viewAdoptionRequests')->name('organization.adoptionRequests');
-        Route::post('organization/adoptionRequests/{id}/update','updateAdoptionStatus')->name('organization.updateAdoptionStatus');
+        Route::put('organization/adoptionRequest/{id}/update','updateAdoptionStatus')->name('organization.updateAdoptionStatus');
     });
 
 

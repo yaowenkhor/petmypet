@@ -7,6 +7,7 @@ use App\Models\Organization;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AdoptionApplication;
+use Storage;
 
 class OrganizationController extends Controller
 {
@@ -56,11 +57,13 @@ class OrganizationController extends Controller
         }
     }
 
-    public function displayEditProfileForm(){
+    public function displayEditProfileForm()
+    {
         //return view('organization.edit', ['url' => 'organization']);
     }
 
-    public function edit(Request $req){
+    public function edit(Request $req)
+    {
         $user = Auth::guard('organization')->user();
 
         $organization = $user->organization;
@@ -74,13 +77,23 @@ class OrganizationController extends Controller
             $user->email = $req['email'];
             $user->phone_number = $req['phone_number'];
             $user->password = bcrypt($req['password']);
+
+            $image = $req->file('image_path');
+
+            if ($image) {
+                if ($user->image_path != null) {
+                    Storage::disk('public')->delete($user->image_path);
+                }
+                $path = $image->store('profile_images', 'public');
+                $user->image_path = $path;
+            }
+
             $user->save();
 
             $organization->details = $req['details'];
             $organization->address = $req['address'];
             $organization->save();
-
-            return response()->json('Yay, Profile updated sucessfully',200);
+            return response()->json('Yay, Profile updated sucessfully', 200);
             //return redirect()->back()->with('success', 'Yay, Profile updated sucessfully');
 
         } catch (\Throwable $th) {
@@ -94,14 +107,22 @@ class OrganizationController extends Controller
     {
         $organization = Auth::guard('organization')->user()->organization;
 
+        $this->authorize('view',$organization);
+
         // Get all requests for pets under this organization
         $requests = AdoptionApplication::where('organization_id', $organization->id)->with(['pet', 'adopter'])->get();
 
-        return view('organization.adoptionRequests', ['requests' => $requests]);
+        return response()->json($requests, 200);
+        //return view('organization.adoptionRequests', ['requests' => $requests]);
     }
 
     public function updateAdoptionStatus(Request $request, $id)
     {
+
+        $organization = Auth::guard('organization')->user()->organization;
+
+        $this->authorize('update', $organization);
+ 
         // Validate incoming request
         $request->validate([
             'status' => 'required|in:approved,rejected',
@@ -113,15 +134,8 @@ class OrganizationController extends Controller
 
         // Check if the application exists
         if (!$adoption) {
-            return redirect('organization/adoptionRequests')->with('error', 'Adoption request not found.');
-        }
-
-        // Get logged-in organization ID
-        $organizationId = Auth::guard('organization')->user()->organization->id;
-
-        // Ensure the organization owns the application
-        if ($adoption->organization_id !== $organizationId) {
-            return redirect('organization//adoptionRequests')->with('error', 'Unauthorized access.');
+            return response()->json(['error'=> 'Adoption is not found'], 404);
+            //return redirect('organization/adoptionRequests')->with('error', 'Adoption request not found.');
         }
 
         // Update the application status and optional message
@@ -145,9 +159,9 @@ class OrganizationController extends Controller
                 ->where('status', 'pending')
                 ->update(['status' => 'rejected']);
         }
-
+        return response()->json(['Success'=> 'Adoption update completed'], 200);
         // Return success message
-        return redirect('organizatio/adoptionRequests')->with('success', 'Adoption request updated successfully.');
+        //return redirect('organization/adoptionRequests')->with('success', 'Adoption request updated successfully.');
     }
 
 
