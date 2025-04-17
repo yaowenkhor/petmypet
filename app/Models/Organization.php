@@ -24,4 +24,8 @@ class Organization extends Model
     public function pets(){
         return $this->hasMany(Pet::class);
     }
+
+    public function approvals(){
+        return $this->hasMany(OrganizationApproval::class);
+    }
 }

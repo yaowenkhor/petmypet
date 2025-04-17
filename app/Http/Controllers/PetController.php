@@ -34,15 +34,15 @@ class PetController extends Controller
     public function index()
     {
         $pets = Pet::with('images')->get();
-        return response()->json($pets);
-        //return view('', compact(''));
+        //return response()->json($pets);
+        return view('pets.viewAllPets', ['pets' => $pets]);
     }
 
     public function displayDetails($id)
     {
         $pet = Pet::with('images')->findOrFail($id);
-        return response()->json($pet);
-        //return view('pets.show', compact('pet'));
+        //return response()->json($pet);
+        return view('pets.viewPetDetails', ['pets' => $pet]);
     }
 
     public function search(Request $req)
@@ -77,8 +77,8 @@ class PetController extends Controller
 
         $pets = $pets->with('images')->get();
 
-        return response()->json($pets);
-        //return view('pets.index', compact('pets'));
+        //return response()->json($pets);
+        return view('pets.viewAllPets', ['pets' => $pets]);
     }
 
     public function show()
@@ -88,14 +88,14 @@ class PetController extends Controller
 
         $pets = $organization->pets()->with('images')->get();
 
-        return response()->json($pets);
-        //return view('pets.index', compact('pets'));
+        //return response()->json($pets);
+        return view('pets.organizationPets', ['pets' => $pets]);
     }
 
     public function create()
     {
         $this->authorize('create', Pet::class);
-        //return view('pets.create');
+        return view('pets.createPets');
     }
 
     public function store(Request $req)
@@ -135,12 +135,12 @@ class PetController extends Controller
                 ]);
             }
 
-            return response()->json($pet);
-            //return redirect()->route('pets.index')->with('success', 'Yay! Your pet has been listed successfully.');
+            //return response()->json($pet);
+            return redirect()->route('pet.show')->with('success', 'Yay! Your pet has been listed successfully.');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops! We couldn’t list your pet. Give it another shot!');
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops! We couldn’t list your pet. Give it another shot!');
         }
     }
 
@@ -159,12 +159,12 @@ class PetController extends Controller
             }
             $pet->delete();
 
-            return response()->json(['success' => 'Pet deleted successfully'], 200);
-            //return redirect()->route('pets.index')->with('success', 'Yay! Your pet has been deleted successfully.');
+            //return response()->json(['success' => 'Pet deleted successfully'], 200);
+            return redirect()->route('pet.show')->with('success', 'Yay! Your pet has been deleted successfully.');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops! We couldn’t delete your pet. Give it another shot!'); 
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops! We couldn’t delete your pet. Give it another shot!'); 
         }
     }
 
@@ -216,11 +216,11 @@ class PetController extends Controller
             }
             $pet->update($data);
 
-            return response()->json(['success' => 'Yup! Your pet has been updated successfully'], 200);
-            //return redirect()->route('pets.index')->with('success', 'Yup! Your pet has been updated successfully');
+            //return response()->json(['success' => 'Yup! Your pet has been updated successfully'], 200);
+            return redirect()->route('pet.show')->with('success', 'Yup! Your pet has been updated successfully');
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops! We couldn’t update your pet. Give it another shot!');
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops! We couldn’t update your pet. Give it another shot!');
         }
 
     }
@@ -237,7 +237,7 @@ class PetController extends Controller
         $alreadyReported = ReportedPost::where('adopter_id', $adopterId)->where('pet_id', $id)->exists();
 
         if ($alreadyReported) {
-            return back()->with('error', 'You have already reported this post.');
+            return redirect()->back()->with('error', 'You have already reported this post.');
         }
 
         ReportedPost::create([
@@ -246,6 +246,6 @@ class PetController extends Controller
             'reason' => $req->reason,
         ]);
 
-        return back()->with('success', 'Post has been reported. Thank you.');
+        return redirect()->back()->with('success', 'Post has been reported. Thank you.');
     }
 }

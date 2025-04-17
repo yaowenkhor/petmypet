@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AdoptionApplication;
+use App\Models\OrganizationApproval;
 use Storage;
 
 class OrganizationController extends Controller
@@ -25,40 +26,42 @@ class OrganizationController extends Controller
             'image_path' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'details' => ['required', 'string'],
             'address' => ['required', 'string'],
-        ],[
+        ], [
             'password.regex' => 'Password must contain at least one letter, one number, and one special character.',
         ]);
     }
 
     public function index()
     {
-        return view("organization.home");
+        $user = Auth::user()->load('organization.approvals');
+        //return response()->json($user);
+        return view("organization.home",["user"=> $user]);
     }
 
     public function reapply()
     {
         $user = Auth::guard('organization')->user();
-
+        
         $organization = $user->organization;
 
         if ($organization->status == 'rejected') {
             $organization->status = 'pending';
             $organization->save();
 
-            return response()->json("Reapplication submitted successfully!", 200);
-            //return redirect()->back()->with('success', 'Reapplication submitted successfully!');
+            return redirect()->back()->with('success', 'Yay, Reapplication submitted successfully!');
         } elseif ($organization->status == "pending") {
-            return response()->json("Reapplication already submitted!", 400);
-            //return redirect()->back()->with('error', 'Reapplication already submitted!');
+
+            return redirect()->back()->with('error', 'Oops, Reapplication already submitted!');
         } elseif ($organization->status == "approved") {
-            return response()->json("Organization already approved!", 400);
-            //return redirect()->back()->with('error', 'Organization already approved!');
+
+            return redirect()->back()->with('error', 'Oops, Organization already approved!');
         }
     }
 
     public function displayEditProfileForm()
     {
-        //return view('organization.edit', ['url' => 'organization']);
+        $user = Auth::guard('organization')->user();
+        return view('organization.editProfile', ['user'=> $user]);
     }
 
     public function edit(Request $req)
@@ -92,12 +95,12 @@ class OrganizationController extends Controller
             $organization->details = $req['details'];
             $organization->address = $req['address'];
             $organization->save();
-            return response()->json('Yay, Profile updated sucessfully', 200);
-            //return redirect()->back()->with('success', 'Yay, Profile updated sucessfully');
+            
+            return redirect()->route('organization.profile')->with('success', 'Yay, Profile updated sucessfully');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
+            
+            return redirect()->route('organization.profile')->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
 
@@ -106,13 +109,12 @@ class OrganizationController extends Controller
     {
         $organization = Auth::guard('organization')->user()->organization;
 
-        $this->authorize('view',$organization);
+        $this->authorize('view', $organization);
 
         // Get all requests for pets under this organization
         $requests = AdoptionApplication::where('organization_id', $organization->id)->with(['pet', 'adopter'])->get();
 
-        return response()->json($requests, 200);
-        //return view('organization.adoptionRequests', ['requests' => $requests]);
+        return view('organization.adoptionRequests', ['requests' => $requests]);
     }
 
     public function updateAdoptionStatus(Request $request, $id)
@@ -121,7 +123,7 @@ class OrganizationController extends Controller
         $organization = Auth::guard('organization')->user()->organization;
 
         $this->authorize('update', $organization);
- 
+
         // Validate incoming request
         $request->validate([
             'status' => 'required|in:approved,rejected',
@@ -133,8 +135,8 @@ class OrganizationController extends Controller
 
         // Check if the application exists
         if (!$adoption) {
-            return response()->json(['error'=> 'Adoption is not found'], 404);
-            //return redirect('organization/adoptionRequests')->with('error', 'Adoption request not found.');
+
+            return redirect()->route('organization.adoptionRequests')->with('error', 'Opps, Adoption request not found.');
         }
 
         // Update the application status and optional message
@@ -158,11 +160,7 @@ class OrganizationController extends Controller
                 ->where('status', 'pending')
                 ->update(['status' => 'rejected']);
         }
-        return response()->json(['Success'=> 'Adoption update completed'], 200);
         // Return success message
-        //return redirect('organization/adoptionRequests')->with('success', 'Adoption request updated successfully.');
+        return redirect()->route('organization.adoptionRequests')->with('success', 'Yay, Adoption request updated successfully.');
     }
-
-
-
 }

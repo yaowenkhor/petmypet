@@ -8,7 +8,8 @@ use App\Models\Organization;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Policies\PetPolicy;
 use App\Policies\AdminPolicy;
-use App\Policies\OrganizationPolicy;
+use App\Policies\OrganizationPolicy;#
+use App\Policies\AdopterPolicy;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -23,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider
         Pet::class => PetPolicy::class,
         User::class => AdminPolicy::class,
         Organization::class => OrganizationPolicy::class,
+        AdopterPolicy::class => AdopterPolicy::class,
     ];
 
     /**
