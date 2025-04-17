@@ -9,6 +9,7 @@ use App\Models\PetsImage;
 use Storage;
 use App\Models\ReportedPost;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class PetController extends Controller
 {
@@ -33,9 +34,16 @@ class PetController extends Controller
 
     public function index()
     {
+        if(!request()->cookie('visited')){
+            Cookie::queue('visited', true, 60);
+            $showGreeting = true;
+        }else{
+            $showGreeting = false;
+        }
+
         $pets = Pet::with('images')->get();
         //return response()->json($pets);
-        return view('pets.viewAllPets', ['pets' => $pets]);
+        return view('pets.viewAllPets', compact('pets','showGreeting'));
     }
 
     public function displayDetails($id)
