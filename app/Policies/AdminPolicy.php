@@ -27,5 +27,13 @@ class AdminPolicy
         return false;
     }
 
+    public function viewDashboard(User $user)
+    {
+        if ($user->role === 'admin') {
+            return true;
+        }
+        return false;
+    }
+
 
 }

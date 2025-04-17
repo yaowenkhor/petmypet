@@ -11,9 +11,15 @@ use Storage;
 
 class AdopterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:adopter');
+    }
+
     public function index()
     {
-        return view("adopter.home");
+        $user = Auth::user()->load('adopter.application');
+        return view("adopter.home", compact("user"));
     }
 
     //Submit Application Function 
@@ -35,7 +41,6 @@ class AdopterController extends Controller
 
             $organization = $pet->organization;
             $organization_id = $organization->id;
-
             $data['adopter_id'] = $user->id;
             $data['pet_id'] = $pet->id;
             $data['organization_id'] = $organization_id;
@@ -44,7 +49,6 @@ class AdopterController extends Controller
             // Create record
             AdoptionApplication::create($data);
 
-            
             // Redirect
             return redirect()->back()->with('success', 'Application submitted.');
         }
@@ -54,7 +58,7 @@ class AdopterController extends Controller
     public function showProfile()
     {
         $user = Auth::user();
-        return view('adopter.profile', ['user' => $user]);
+        return view('adopter.profile', compact('user'));
     }
 
     // Show edit form for adopter profile
@@ -66,8 +70,8 @@ class AdopterController extends Controller
         //     return redirect()->route('adopter.home')->with('error', 'Unauthorized access.');
         // }
 
-        return response()->json($user);
-        //return view('adopter.editProfile', ['user' => $adopter]);
+        //return response()->json($user);
+        return view('adopter.editProfile', compact('user'));
     }
 
 
@@ -99,8 +103,8 @@ class AdopterController extends Controller
         $user->password = bcrypt($req->password);
         $user->save();
 
-        return response()->json($user);
-        //return redirect('adopter/profile/' . $id)->with('success', 'Profile updated successfully');
+        //return response()->json($user);
+        return redirect()->route('adopter.profile')->with('success', 'Profile updated successfully');
     }
 
 
