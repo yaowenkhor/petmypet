@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Organization;
 use App\Models\OrganizationApproval;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -16,6 +17,10 @@ class AdminController extends Controller
 
     public function index()
     {
+        return view('admin.index');
+    }
+    public function organizationApplications()
+    {
         $user = Auth::user();
 
         $this->authorize('viewDashboard', $user);
@@ -26,7 +31,7 @@ class AdminController extends Controller
 
         $organizationApproval = OrganizationApproval::all();
 
-        return view("admin.home", compact("pending", "approved", "rejected", "organizationApproval"));
+        return view("admin.organization", compact("pending", "approved", "rejected", "organizationApproval"));
     }
 
     public function approveOrganization($id)
@@ -85,5 +90,42 @@ class AdminController extends Controller
 
             return redirect()->back()->with('error', 'Oops, Organization already approved!');
         }
+    }
+
+    public function editProfile()
+    {
+        $admin = Auth::user();
+
+        if ($admin->role !== 'admin') {
+            abort(403); // Prevent others from accessing
+        }
+
+        return view('admin.edit-profile', compact('admin'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $admin = Auth::user();
+
+        if ($admin->role !== 'admin') {
+            abort(403);
+        }
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
+
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+
+        if ($request->filled('password')) {
+            $admin->password = bcrypt($request->password);
+        }
+
+        $admin->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 }
