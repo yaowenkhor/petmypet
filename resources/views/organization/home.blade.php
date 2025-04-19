@@ -104,6 +104,9 @@
                             <a href="{{ route('organization.edit.form') }}" class="btn btn-outline-primary">
                                 Edit Profile
                             </a>
+                            <a href="{{ route('organization.adoptionRequests') }}" class="btn btn-outline-secondary ms-2">
+                                View Adoption Requests
+                            </a>
                         </div>
                     </div>
                 </div>

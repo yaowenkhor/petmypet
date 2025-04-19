@@ -113,8 +113,8 @@ class OrganizationController extends Controller
 
         // Get all requests for pets under this organization
         $requests = AdoptionApplication::where('organization_id', $organization->id)->with(['pet', 'adopter'])->get();
-        return response()->json($requests);
-        //return view('organization.adoptionRequests', ['requests' => $requests]);
+        //return response()->json($requests);
+        return view('organization.adoptionRequests', ['requests' => $requests]);
     }
 
     public function updateAdoptionStatus(Request $request, $id)

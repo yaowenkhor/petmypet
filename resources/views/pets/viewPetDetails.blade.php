@@ -10,14 +10,14 @@
                     </div>
 
                     <div class="card-body p-5">
-                        <!-- Display Success Message -->
+
                         @if (session('success'))
                             <div class="alert alert-success text-center" role="alert">
                                 {{ session('success') }}
                             </div>
                         @endif
 
-                        <!-- Display Error Message -->
+
                         @if (session('error'))
                             <div class="alert alert-danger text-center" role="alert">
                                 {{ session('error') }}
