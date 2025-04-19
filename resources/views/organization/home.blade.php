@@ -18,7 +18,7 @@
         <div class="col-lg-10">
             <div class="card border-1 rounded shadow-sm">
                 <div class="card-header bg-white text-center">
-                    <h2 class="text-primary fw-bold" style="font-size: 30px;">
+                    <h2 class="text-primary fw-bold" style="font-size: 30px; padding-top: 20px; padding-bottom: 15px;">
                         {{ __('Organization Profile') }}
                     </h2>
                 </div>
@@ -30,7 +30,8 @@
                             alt="Profile Image" 
                             class="rounded-circle border border-3 border-primary"
                             width="150" 
-                            height="150">
+                            height="150"
+                            style="object-fit: contain;">
                         <h4 class="mt-3 text-secondary">{{ $user->name }}</h4>
                     </div>
 
