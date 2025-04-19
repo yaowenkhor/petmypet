@@ -15,7 +15,7 @@ class PetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:organization')->except('index', 'showDetails', 'search', 'report');
+        $this->middleware('auth:organization')->except('index', 'displayDetails', 'search', 'report');
     }
 
     protected function validator(array $data)
