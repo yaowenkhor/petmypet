@@ -104,6 +104,7 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
 Route::controller(App\Http\Controllers\PetController::class)->group(function () {
 
     Route::group(['middleware' => 'auth:organization'], function(){
+        Route::get('pet/create', 'create')->name('pet.create.form');
         Route::post('pet/create', 'store')->name('pet.create');
         Route::delete('pet/delete/{id}', 'destroy')->name('pet.delete');
 

@@ -81,6 +81,22 @@
                                         </div>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <th class="bg-light">Pet Count</th>
+                                    <td>
+                                        <div class="d-flex justify-content-between align-items-center w-100">
+                                            <span>1</span>
+                                            <div>
+                                                <a href="{{ route('pet.create.form') }}" class="btn btn-outline-success btn-sm ms-3">
+                                                    Create Pets
+                                                </a>
+                                                <a href="{{ route('pet.index') }}" class="btn btn-outline-primary btn-sm ms-2">
+                                                    View All Pets
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

@@ -120,11 +120,11 @@ class PetController extends Controller
             $data['organization_id'] = $organization->id;
 
             if (!$req->hasFile('image_path')) {
-                return response()->json(['error' => 'No images uploaded.'], 400);
-                //return redirect()->back()->with('error', 'Ehh, Please upload at least one image.');
+                //return response()->json(['error' => 'No images uploaded.'], 400);
+                return redirect()->back()->with('error', 'Ehh, Please upload at least one image.');
             } else if ($req->hasFile('image_path') && count($req->file('image_path')) > 4) {
-                return response()->json(['error' => 'You can upload a maximum of 4 images.'], 400);
-                //return redirect()->back()->with('error', 'Ehh, You can upload a maximum of 4 images.');
+                //return response()->json(['error' => 'You can upload a maximum of 4 images.'], 400);
+                return redirect()->back()->with('error', 'Ehh, You can upload a maximum of 4 images.');
             }
 
             $req->validate([
