@@ -90,8 +90,8 @@
                                                 <a href="{{ route('pet.create.form') }}" class="btn btn-outline-success btn-sm ms-3">
                                                     Create Pets
                                                 </a>
-                                                <a href="{{ route('pet.index') }}" class="btn btn-outline-primary btn-sm ms-2">
-                                                    View All Pets
+                                                <a href="{{ route('pet.show') }}" class="btn btn-outline-primary btn-sm ms-2">
+                                                    View My Pets
                                                 </a>
                                             </div>
                                         </div>
