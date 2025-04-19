@@ -35,13 +35,13 @@ class OrganizationController extends Controller
     {
         $user = Auth::user()->load('organization.approvals');
         //return response()->json($user);
-        return view("organization.home",["user"=> $user]);
+        return view("organization.home", ["user" => $user]);
     }
 
     public function reapply()
     {
         $user = Auth::guard('organization')->user();
-        
+
         $organization = $user->organization;
 
         if ($organization->status == 'rejected') {
@@ -61,7 +61,7 @@ class OrganizationController extends Controller
     public function displayEditProfileForm()
     {
         $user = Auth::guard('organization')->user();
-        return view('organization.editProfile', ['user'=> $user]);
+        return view('organization.editProfile', ['user' => $user]);
     }
 
     public function edit(Request $req)
@@ -95,11 +95,11 @@ class OrganizationController extends Controller
             $organization->details = $req['details'];
             $organization->address = $req['address'];
             $organization->save();
-            
+
             return redirect()->route('organization.home')->with('success', 'Yay, Profile updated sucessfully');
 
         } catch (\Throwable $th) {
-            
+
             return redirect()->route('organization.home')->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
@@ -113,8 +113,8 @@ class OrganizationController extends Controller
 
         // Get all requests for pets under this organization
         $requests = AdoptionApplication::where('organization_id', $organization->id)->with(['pet', 'adopter'])->get();
-
-        return view('organization.adoptionRequests', ['requests' => $requests]);
+        return response()->json($requests);
+        //return view('organization.adoptionRequests', ['requests' => $requests]);
     }
 
     public function updateAdoptionStatus(Request $request, $id)

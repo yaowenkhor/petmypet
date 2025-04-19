@@ -7,19 +7,9 @@
                 <div class="text-center mb-4">
                     <h2 class="text-primary fw-bold">All Pets</h2>
                     <p class="text-muted">Browse through all the pets available for adoption.</p>
-                    @if (Auth::check() && Auth::user()->role)
-                        <a href="{{ Auth::user()->role === 'organization' ? route('organization.home') : (Auth::user()->role === 'adopter' ? route('adopter.home') : route('admin.home')) }}"
-                            class="btn btn-outline-secondary mt-2">
-                            <i class="bi bi-arrow-left"></i> Back to Home
-                        </a>
-                    @else
-                        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-secondary mt-2">
-                                <i class="bi bi-arrow-left"></i> Back to Login
-                            </button>
-                        </form>
-                    @endif
+                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary mt-2">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
                 </div>
 
                 @if (session('success'))

@@ -27,8 +27,8 @@
 
                 @if(Auth::guard('adopter')->check() || Auth::guard('organization')->check() || Auth::guard('admin')->check())
                     <a href="#">Profile</a>
-                    <a href="{{ route('logout') }}" 
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <a href="{{ route('logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
