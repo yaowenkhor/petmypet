@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/selectrole', function () {
+    return view('auth.select-role');
+});
+Route::get('/selectrole/redirect', [App\Http\Controllers\Auth\LoginController::class, 'loginSelectRole'])->name('login.select.role');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -84,7 +88,7 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
 
 Route::controller(App\Http\Controllers\PetController::class)->group(function () {
 
-    Route::group(['middleware' => 'auth:organization'], function(){
+    Route::group(['middleware' => 'auth:organization'], function () {
         Route::post('pet/create', 'store')->name('pet.create');
         Route::delete('pet/delete/{id}', 'destroy')->name('pet.delete');
 
