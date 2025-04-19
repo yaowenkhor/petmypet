@@ -27,6 +27,8 @@ class AdopterController extends Controller
     {
         $user = Auth::user();
 
+        $this->authorize("submit", $user);
+
         $pet = Pet::findOrFail($id);
 
         $existingApplication = AdoptionApplication::where('adopter_id', $user->id)
@@ -54,22 +56,11 @@ class AdopterController extends Controller
         }
     }
 
-    // Show profile of currently logged-in adopter
-    public function showProfile()
-    {
-        $user = Auth::user();
-        return view('adopter.profile', compact('user'));
-    }
-
     // Show edit form for adopter profile
     public function showEditProfile()
     {
         $user = Auth::user()->load('adopter');
-
-        // if (!$user || Auth::id() != $id) {
-        //     return redirect()->route('adopter.home')->with('error', 'Unauthorized access.');
-        // }
-
+        
         //return response()->json($user);
         return view('adopter.editProfile', compact('user'));
     }

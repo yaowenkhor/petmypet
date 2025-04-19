@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\Pet;
 use App\Models\User;
 use App\Models\Organization;
+use App\Models\Adopter;
+use App\Policies\AdopterPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Policies\PetPolicy;
 use App\Policies\AdminPolicy;
@@ -23,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         Pet::class => PetPolicy::class,
         User::class => AdminPolicy::class,
         Organization::class => OrganizationPolicy::class,
+        Adopter::class => AdopterPolicy::class,
     ];
 
     /**
