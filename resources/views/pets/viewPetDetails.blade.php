@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts.master')
 
 @section('content')
     <div class="container py-5">
@@ -10,6 +10,20 @@
                     </div>
 
                     <div class="card-body p-5">
+                        <!-- Display Success Message -->
+                        @if (session('success'))
+                            <div class="alert alert-success text-center" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <!-- Display Error Message -->
+                        @if (session('error'))
+                            <div class="alert alert-danger text-center" role="alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
                         <div class="text-center mb-4">
                             @if ($pets->images->isNotEmpty())
                                 <div class="row">
@@ -39,42 +53,48 @@
                         </p>
 
                         <!-- Button trigger modal -->
-                        @can('submit', App\Models\User::class)
+                        @if (Auth::guard('adopter')->check())
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#adoptionModal">
                                 Request Adoption
                             </button>
-                        @endcan
-
+                        @endif
                         <!-- Modal -->
-                        <div class="modal fade" id="adoptionModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" aria-labelledby="adoptionModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                        <div class="modal fade" id="adoptionModal" tabindex="-1" aria-labelledby="adoptionModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="adoptionModalLabel">Adoption Request</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to request adoption for <strong>{{ $pets->name }}</strong>?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancel</button>
-                                        <form action="{{ route('adoption.submit', $pets->id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-primary">Confirm</button>
-                                        </form>
-                                    </div>
+                                    <form action="{{ route('adoption.submit', $pets->id) }}" method="POST">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <p>Would you like to request adoption for <strong>{{ $pets->name }}</strong>?
+                                            </p>
+                                            <div class="mb-3">
+                                                <label for="question" class="form-label">Why would you like to adopt this
+                                                    pet?</label>
+                                                <textarea class="form-control" id="question" name="question" rows="3"
+                                                    required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="text-center mt-4">
-                            <a href="{{ route('pet.index') }}" class="btn btn-outline-secondary">Back to All Pets</a>
-                        </div>
                     </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ route('pet.index') }}" class="btn btn-outline-secondary">Back to All Pets</a>
                 </div>
             </div>
         </div>

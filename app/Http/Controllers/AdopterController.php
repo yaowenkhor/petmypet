@@ -27,7 +27,6 @@ class AdopterController extends Controller
     {
         $user = Auth::user();
 
-        $this->authorize("submit", $user);
 
         $pet = Pet::findOrFail($id);
 
@@ -60,7 +59,7 @@ class AdopterController extends Controller
     public function showEditProfile()
     {
         $user = Auth::user()->load('adopter');
-        
+
         //return response()->json($user);
         return view('adopter.editProfile', compact('user'));
     }

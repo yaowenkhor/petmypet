@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts.master')
 
 @section('content')
     <div class="container py-5">
@@ -40,7 +40,6 @@
                         @if ($pets->isEmpty())
                             <div class="text-center">
                                 <p class="text-muted">No pets found. Add a new pet to get started!</p>
-                                <a href="{{ route('pet.create.form') }}" class="btn btn-outline-primary">Add New Pet</a>
                             </div>
                         @else
                             <div class="row">
