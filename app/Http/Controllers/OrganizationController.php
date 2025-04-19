@@ -34,8 +34,8 @@ class OrganizationController extends Controller
     public function index()
     {
         $user = Auth::user()->load('organization.approvals');
-        return response()->json($user);
-        //return view("organization.home",["user"=> $user]);
+        //return response()->json($user);
+        return view("organization.home",["user"=> $user]);
     }
 
     public function reapply()
