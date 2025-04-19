@@ -130,4 +130,15 @@ class LoginController extends Controller
             'error' => 'Oops! Invalid credentials. Please try again. ',
         ]);
     }
+
+    public function loginSelectRole(Request $req)
+    {
+        $role = request('role');
+        if ($role === 'organization') {
+            return redirect('/organization/login');
+        } elseif ($role === 'adopter') {
+            return redirect('/adopter/login');
+        }
+        return redirect('/selectrole')->with('error', 'Invalid role selected');
+    }
 }

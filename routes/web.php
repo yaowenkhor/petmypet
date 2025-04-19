@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/selectrole', function () {
+    return view('auth.select-role');
+});
+Route::get('/selectrole/redirect', [App\Http\Controllers\Auth\LoginController::class, 'loginSelectRole'])->name('login.select.role');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -67,10 +71,7 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
 
     Route::group(['middleware' => 'auth:adopter'], function () {
         Route::get('adopter/home', 'index')->name('adopter.home');
-
-        // View user's profile
-        Route::get('adopter/profile', 'showProfile')->name('adopter.profile');
-
+        
         // Show profile edit form
         Route::get('adopter/profile', 'showEditProfile')->name('adopter.profile.editForm');
 
