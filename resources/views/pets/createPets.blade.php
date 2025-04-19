@@ -6,7 +6,7 @@
         <div class="col-lg-8">
             <div class="card border-1 rounded shadow-sm">
                 <div class="card-header bg-white text-center">
-                    <h2 class="text-primary fw-bold" style="font-size: 30px;">
+                    <h2 class="text-primary fw-bold" style="font-size: 30px; padding-top: 20px; padding-bottom: 15px;">
                         {{ __('Add New Pet') }}
                     </h2>
                 </div>
@@ -104,7 +104,7 @@
                         </div>
 
                         <br><br>
-                        
+
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-outline-primary">Add Pet</button>
                             <a href="{{ route('organization.home') }}" class="btn btn-outline-secondary">Cancel</a>
