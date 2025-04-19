@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Console\Application;
+use App\Models\AdoptionApplication;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,12 +14,14 @@ class Adopter extends Model
         'user_id',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function application(){
-        return $this->hasMany(Application::class);  
+    public function application()
+    {
+        return $this->hasMany(AdoptionApplication::class);
     }
 
 }
