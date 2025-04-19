@@ -4,14 +4,41 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-12">
+                <!-- Search and Filter Section -->
                 <div class="text-center mb-4">
                     <h2 class="text-primary fw-bold">All Pets</h2>
                     <p class="text-muted">Browse through all the pets available for adoption.</p>
+
+                    <!-- Search and Filter Form -->
+                    <form action="{{ route('pet.search') }}" method="GET" class="d-flex justify-content-center mb-3">
+                        <!-- Search Input -->
+                        <input type="text" name="term" class="form-control w-50 me-2" placeholder="Search by pet name..."
+                            value="{{ request('term') }}">
+
+                        <!-- Filter Dropdowns -->
+                        <select name="age" class="form-select w-auto me-2">
+                            <option value="">Filter by Age</option>
+                            <option value="asc" {{ request('age') == 'asc' ? 'selected' : '' }}>Youngest First</option>
+                            <option value="desc" {{ request('age') == 'desc' ? 'selected' : '' }}>Oldest First</option>
+                        </select>
+
+                        <select name="status" class="form-select w-auto me-2">
+                            <option value="">Filter by Status</option>
+                            <option value="available" {{ request('status') == 'available' ? 'selected' : '' }}>Available
+                            </option>
+                            <option value="adopted" {{ request('status') == 'adopted' ? 'selected' : '' }}>Adopted</option>
+                        </select>
+
+                        <!-- Search Button -->
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+
                     <a href="{{ url()->previous() }}" class="btn btn-outline-secondary mt-2">
                         <i class="bi bi-arrow-left"></i> Back
                     </a>
                 </div>
 
+                <!-- Success and Error Messages -->
                 @if (session('success'))
                     <div class="alert alert-success text-center" role="alert">
                         {{ session('success') }}
@@ -24,6 +51,7 @@
                     </div>
                 @endif
 
+                <!-- Pets List -->
                 @if ($pets->isEmpty())
                     <div class="text-center">
                         <hr><br><br>
