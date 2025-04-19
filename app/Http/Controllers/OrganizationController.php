@@ -20,7 +20,7 @@ class OrganizationController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:6', 'confirmed', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',],
             'phone_number' => ['required', 'string', 'max:15'],
             'image_path' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
@@ -96,11 +96,11 @@ class OrganizationController extends Controller
             $organization->address = $req['address'];
             $organization->save();
             
-            return redirect()->route('organization.profile')->with('success', 'Yay, Profile updated sucessfully');
+            return redirect()->route('organization.home')->with('success', 'Yay, Profile updated sucessfully');
 
         } catch (\Throwable $th) {
             
-            return redirect()->route('organization.profile')->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
+            return redirect()->route('organization.home')->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
 
