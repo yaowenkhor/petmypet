@@ -27,6 +27,8 @@ class AdopterController extends Controller
     {
         $user = Auth::user();
 
+        $this->authorize("submit", $user);
+
         $pet = Pet::findOrFail($id);
 
         $existingApplication = AdoptionApplication::where('adopter_id', $user->id)
