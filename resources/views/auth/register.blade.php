@@ -1,5 +1,10 @@
 @extends('layouts.master')
 
+@section('page-specific-css')
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/app.js') }}" defer></script>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">

@@ -6,6 +6,11 @@
     }
 @endphp
 
+@section('page-specific-css')
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/app.js') }}" defer></script>
+@endsection
+
 @section('title', 'Login')
 @section('content')
     <div class="container">
