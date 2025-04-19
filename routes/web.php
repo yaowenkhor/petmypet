@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +71,21 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
 
     Route::group(['middleware' => 'auth:adopter'], function () {
         Route::get('adopter/home', 'index')->name('adopter.home');
+
+        // View user's profile
+        Route::get('adopter/profile', 'showProfile')->name('adopter.profile');
+
+        // Show profile edit form
+        Route::get('adopter/profile', 'showEditProfile')->name('adopter.profile.editForm');
+
+        // Submit profile update
+        Route::put('adopter/edit', 'editProfile')->name('adopter.profile.update');
+
+        // submit adoption application
+        Route::post('adopter/apply/{id}', 'submitApplication')->name('adoption.submit');
     });
+
+    
 
 });
 
@@ -82,7 +97,11 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
 
         Route::post('organization/reapply', 'reapply')->name('organization.reapply');
         Route::put('organization/edit', 'edit')->name('organization.edit');
+
+        Route::get('organization/adoptionRequests', 'viewAdoptionRequests')->name('organization.adoptionRequests');
+        Route::put('organization/adoptionRequest/{id}/update','updateAdoptionStatus')->name('organization.updateAdoptionStatus');
     });
+
 
 });
 
@@ -102,6 +121,10 @@ Route::controller(App\Http\Controllers\PetController::class)->group(function () 
     Route::get('pets/search', 'search')->name('pet.search');
 
     Route::get('pet/details/{id}', 'displayDetails')->name('pet.details');
+
+    // Adopter reports a pet post
+    Route::post('pet/{id}/report', 'report')->middleware('auth:adopter') ->name('pet.report');
+
 });
 
 

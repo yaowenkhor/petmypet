@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Organization;
 use App\Models\OrganizationApproval;
-use Illuminate\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -18,7 +16,17 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view("admin.home");
+        $user = Auth::user();
+
+        $this->authorize('viewDashboard', $user);
+
+        $pending = Organization::where('status', 'pending')->get();
+        $approved = Organization::where('status', 'approved')->get();
+        $rejected = Organization::where('status', 'rejected')->get();
+
+        $organizationApproval = OrganizationApproval::all();
+
+        return view("admin.home", compact("pending", "approved", "rejected", "organizationApproval"));
     }
 
     public function approveOrganization($id)
@@ -40,18 +48,18 @@ class AdminController extends Controller
                 'message' => 'Hooray, Organization approved!'
             ]);
 
-            return response()->json("Organization approved successfully!", 200);
-            //return redirect()->back()->with('success', 'Organization approved successfully!');
+            return redirect()->back()->with('success', 'Yay, Organization approved successfully!');
         } else if ($organization && $organization->status == "rejected") {
-            return response()->json("Organization already rejected!", 400);
-            //return redirect()->back()->with('error', 'Organization already rejected!');
+
+            return redirect()->back()->with('error', 'Oops, Organization already rejected!');
         } else if ($organization && $organization->status == "approved") {
-            return response()->json("Organization already approved!", 400);
-            //return redirect()->back()->with('error', 'Organization already approved!');
+
+            return redirect()->back()->with('error', 'Oops, Organization already approved!');
         }
     }
 
-    public function rejectOrganization($id){
+    public function rejectOrganization($id)
+    {
         $user = Auth::user();
 
         $this->authorize('manageStatus', $user);
@@ -69,16 +77,13 @@ class AdminController extends Controller
                 'message' => 'Oh dear, Organization rejected! Please try tp reapply!'
             ]);
 
-            return response()->json("Organization rejected successfully!", 200);
-            //return redirect()->back()->with('success', 'Organization approved successfully!');
+            return redirect()->back()->with('success', 'Yay, Organization approved successfully!');
         } else if ($organization && $organization->status == "approved") {
-            return response()->json("Organization already approved!", 400);
-            //return redirect()->back()->with('error', 'Organization already rejected!');
+
+            return redirect()->back()->with('error', 'Oops, Organization already rejected!');
         } else if ($organization && $organization->status == "rejected") {
-            return response()->json("Organization already rejected!", 400);
-            //return redirect()->back()->with('error', 'Organization already approved!');
+
+            return redirect()->back()->with('error', 'Oops, Organization already approved!');
         }
-
-
     }
 }

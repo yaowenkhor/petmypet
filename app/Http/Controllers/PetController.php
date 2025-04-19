@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Pet;
 use App\Models\PetsImage;
-use Auth;
 use Storage;
+use App\Models\ReportedPost;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class PetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:organization')->except('index', 'showDetails', 'search');
+        $this->middleware('auth:organization')->except('index', 'showDetails', 'search', 'report');
     }
 
     protected function validator(array $data)
@@ -33,16 +34,23 @@ class PetController extends Controller
 
     public function index()
     {
+        if(!request()->cookie('visited')){
+            Cookie::queue('visited', true, 60);
+            $showGreeting = true;
+        }else{
+            $showGreeting = false;
+        }
+
         $pets = Pet::with('images')->get();
-        return response()->json($pets);
-        //return view('', compact(''));
+        //return response()->json($pets);
+        return view('pets.viewAllPets', compact('pets','showGreeting'));
     }
 
     public function displayDetails($id)
     {
         $pet = Pet::with('images')->findOrFail($id);
-        return response()->json($pet);
-        //return view('pets.show', compact('pet'));
+        //return response()->json($pet);
+        return view('pets.viewPetDetails', ['pets' => $pet]);
     }
 
     public function search(Request $req)
@@ -77,8 +85,8 @@ class PetController extends Controller
 
         $pets = $pets->with('images')->get();
 
-        return response()->json($pets);
-        //return view('pets.index', compact('pets'));
+        //return response()->json($pets);
+        return view('pets.viewAllPets', ['pets' => $pets]);
     }
 
     public function show()
@@ -88,14 +96,14 @@ class PetController extends Controller
 
         $pets = $organization->pets()->with('images')->get();
 
-        return response()->json($pets);
-        //return view('pets.index', compact('pets'));
+        //return response()->json($pets);
+        return view('pets.organizationPets', ['pets' => $pets]);
     }
 
     public function create()
     {
         $this->authorize('create', Pet::class);
-        //return view('pets.create');
+        return view('pets.createPets');
     }
 
     public function store(Request $req)
@@ -135,12 +143,12 @@ class PetController extends Controller
                 ]);
             }
 
-            return response()->json($pet);
-            //return redirect()->route('pets.index')->with('success', 'Yay! Your pet has been listed successfully.');
+            //return response()->json($pet);
+            return redirect()->route('pet.show')->with('success', 'Yay! Your pet has been listed successfully.');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops! We couldn’t list your pet. Give it another shot!');
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops! We couldn’t list your pet. Give it another shot!');
         }
     }
 
@@ -159,12 +167,12 @@ class PetController extends Controller
             }
             $pet->delete();
 
-            return response()->json(['success' => 'Pet deleted successfully'], 200);
-            //return redirect()->route('pets.index')->with('success', 'Yay! Your pet has been deleted successfully.');
+            //return response()->json(['success' => 'Pet deleted successfully'], 200);
+            return redirect()->route('pet.show')->with('success', 'Yay! Your pet has been deleted successfully.');
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops! We couldn’t delete your pet. Give it another shot!'); 
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops! We couldn’t delete your pet. Give it another shot!'); 
         }
     }
 
@@ -177,7 +185,7 @@ class PetController extends Controller
         return view("organization.editPet", compact('pet', 'images'));
     }
 
-    public function update($id, Request $req)
+    public function update(Request $req, $id)
     {
         $pet = Pet::findOrFail($id);
         $this->authorize('update', $pet);
@@ -216,14 +224,36 @@ class PetController extends Controller
             }
             $pet->update($data);
 
-            return response()->json(['success' => 'Yup! Your pet has been updated successfully'], 200);
-            //return redirect()->route('pets.index')->with('success', 'Yup! Your pet has been updated successfully');
+            //return response()->json(['success' => 'Yup! Your pet has been updated successfully'], 200);
+            return redirect()->route('pet.show')->with('success', 'Yup! Your pet has been updated successfully');
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage()], 500);
-            //return redirect()->back()->with('error', 'Oops! We couldn’t update your pet. Give it another shot!');
+            //return response()->json(['error' => $th->getMessage()], 500);
+            return redirect()->back()->with('error', 'Oops! We couldn’t update your pet. Give it another shot!');
         }
 
     }
 
+    public function report(Request $req, $id)
+    {
+        $pet = Pet::find($id);
 
+        $this->authorize('report', $pet);
+
+        $adopterId = auth()->id();
+
+        // Prevent duplicate report
+        $alreadyReported = ReportedPost::where('adopter_id', $adopterId)->where('pet_id', $id)->exists();
+
+        if ($alreadyReported) {
+            return redirect()->back()->with('error', 'You have already reported this post.');
+        }
+
+        ReportedPost::create([
+            'adopter_id' => $adopterId,
+            'pet_id' => $id,
+            'reason' => $req->reason,
+        ]);
+
+        return redirect()->back()->with('success', 'Post has been reported. Thank you.');
+    }
 }
