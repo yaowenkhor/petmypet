@@ -19,7 +19,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #6a0dad;">
             <div class="container-fluid d-flex justify-content-between align-items-center px-5">
                 <!-- Left side: Brand -->
-                <a class="navbar-brand mb-0 h1 fw-normal" href="#">PetMyPet</a>
+                <a class="navbar-brand mb-0 h1 fw-normal" href="{{ route('pet.index') }}">PetMyPet</a>
 
                 <!-- Right side: Nav links -->
                 <div>

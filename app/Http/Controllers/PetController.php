@@ -35,13 +35,13 @@ class PetController extends Controller
     public function index()
     {
         if (!request()->cookie('visited')) {
-            Cookie::queue('visited', true, 60);
+            Cookie::queue('visited', true, 10 * 60); 
             $showGreeting = true;
         } else {
             $showGreeting = false;
         }
 
-        $pets = Pet::with('images')->paginate(5);
+        $pets = Pet::with('images')->paginate(9);
         //return response()->json($pets);
         return view('pets.viewAllPets', compact('pets', 'showGreeting'));
     }
@@ -55,6 +55,13 @@ class PetController extends Controller
 
     public function search(Request $req)
     {
+        if (!request()->cookie('visited')) {
+            Cookie::queue('visited', true, 10 * 60); 
+            $showGreeting = true;
+        } else {
+            $showGreeting = false;
+        }
+
         $search_term = $req->query('term');
 
         $age_filter = $req->query('age') ? $req->query('age') : null;
@@ -83,10 +90,10 @@ class PetController extends Controller
             $pets->where('status', $status_filter);
         }
 
-        $pets = $pets->with('images')->paginate(5);
+        $pets = $pets->with('images')->paginate(9);
 
         //return response()->json($pets);
-        return view('pets.viewAllPets', ['pets' => $pets]);
+        return view('pets.viewAllPets', compact('pets', 'showGreeting'));
     }
 
     public function show()

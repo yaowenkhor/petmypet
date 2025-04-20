@@ -4,6 +4,12 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-12">
+                @if ($showGreeting)
+                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        We hope you find your perfect pet companion here! Feel free to explore and let us know if you have any questions.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                @endif
                 <!-- Search and Filter Section -->
                 <div class="text-center mb-4">
                     <h2 class="text-primary fw-bold">All Pets</h2>
