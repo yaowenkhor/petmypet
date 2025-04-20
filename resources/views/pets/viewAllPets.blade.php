@@ -1,4 +1,8 @@
 @extends('layouts.master')
+@php
+    $loggedInUser = Auth::user(); // For 'user' or 'organization'
+    $adminUser = Auth::guard('admin')->user(); // For admin
+@endphp
 
 @section('content')
     <div class="container py-5">
@@ -84,6 +88,16 @@
                                             class="btn btn-outline-primary btn-sm w-100">
                                             View Details
                                         </a>
+
+                                        <!-- Admin Delete Button -->
+                                        @if (Auth::guard('admin')->check())
+                                            <form action="{{ route('admin.pets.delete', $pet->id) }}" method="POST" class="mt-2"
+                                                onsubmit="return confirm('Are you sure you want to delete this pet?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm w-100">Delete</button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +107,6 @@
                         {{ $pets->links() }}
                     </div>
                 @endif
-
             </div>
         </div>
     </div>

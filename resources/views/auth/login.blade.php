@@ -67,23 +67,15 @@
                                     class="form-input @error('password') is-invalid @enderror" name="password" required
                                     autocomplete="current-password" placeholder="Password">
                             </div>
-                            <div class="msg error">
-                                @error('password')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            @error('password')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
 
-                            <div class="msg error">
-                                @if ($errors->has('error'))
-                                    <div class="invalid-feedback" role="alert">
-                                        {{ $errors->first('error') }}
-                                    </div>
-                                @endif
-                            </div>
+                            @if ($errors->has('error'))
+                                <div class="text-danger">{{ $errors->first('error') }}</div>
+                            @endif
 
                             <br>
-
-
 
                             <button type="submit" class="btn blue">
                                 {{ __('Login') }}

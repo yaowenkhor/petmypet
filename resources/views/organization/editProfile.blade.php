@@ -56,7 +56,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">Enter new password / Enter your password to confirm changes</label>
                                 <input type="password" name="password" id="password" class="form-control"
                                     placeholder="Enter new password">
                                 @error('password')

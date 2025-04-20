@@ -28,7 +28,7 @@ class AdopterController extends Controller
         $user = Auth::user();
         $pet = Pet::findOrFail($id);
 
-        if($pet->status != 'available') {
+        if ($pet->status != 'available') {
             return redirect()->back()->with('error', 'This pet is not available for adoption.');
         }
 
@@ -59,7 +59,8 @@ class AdopterController extends Controller
     {
         $user = Auth::user()->load('adopter');
 
-        return view('adopter.editProfile', compact('user'));
+        //return response()->json($user);
+        return view('adopter.home', compact('user'));
     }
 
 
@@ -82,6 +83,7 @@ class AdopterController extends Controller
             }
             $path = $image->store('profile_images', 'public');
             $user->image_path = $path;
+            logger("Image uploaded: " . $path);
         }
 
         $user->name = $req->name;

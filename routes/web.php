@@ -59,6 +59,8 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function (
 
         Route::get('admin/profile', 'editProfile')->name('admin.profile.edit');
         Route::post('admin/profile', 'updateProfile')->name('admin.profile.update');
+        Route::delete('admin/pets/{id}', 'deletePet')->name('admin.pets.delete');
+
     });
 
 });
@@ -69,7 +71,7 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
         Route::get('adopter/home', 'index')->name('adopter.home');
 
         // Show profile edit form
-        Route::get('adopter/profile', 'showEditProfile')->name('adopter.profile.editForm');
+        Route::get('adopter/profile', 'showEditProfile')->name('adopter.profile');
 
         // Submit profile update
         Route::put('adopter/edit', 'editProfile')->name('adopter.profile.update');
@@ -100,7 +102,7 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
 
 Route::controller(App\Http\Controllers\PetController::class)->group(function () {
 
-    Route::group(['middleware' => 'auth:organization'], function(){
+    Route::group(['middleware' => 'auth:organization'], function () {
         Route::get('pet/create', 'create')->name('pet.create.form');
         Route::post('pet/create', 'store')->name('pet.create');
         Route::delete('pet/delete/{id}', 'destroy')->name('pet.delete');
