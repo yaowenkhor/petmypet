@@ -20,7 +20,7 @@ class OrganizationController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:6', 'confirmed', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',],
             'phone_number' => ['required', 'string', 'max:15'],
             'image_path' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
@@ -34,14 +34,20 @@ class OrganizationController extends Controller
     public function index()
     {
         $user = Auth::user()->load('organization.approvals');
+
+        $organzation = $user->organization;
+
+        $petCounts =  $organzation->pets()->count();
+
+
         //return response()->json($user);
-        return view("organization.home",["user"=> $user]);
+        return view("organization.home", compact('user', 'petCounts'));
     }
 
     public function reapply()
     {
         $user = Auth::guard('organization')->user();
-        
+
         $organization = $user->organization;
 
         if ($organization->status == 'rejected') {
@@ -61,7 +67,7 @@ class OrganizationController extends Controller
     public function displayEditProfileForm()
     {
         $user = Auth::guard('organization')->user();
-        return view('organization.editProfile', ['user'=> $user]);
+        return view('organization.editProfile', ['user' => $user]);
     }
 
     public function edit(Request $req)
@@ -95,12 +101,12 @@ class OrganizationController extends Controller
             $organization->details = $req['details'];
             $organization->address = $req['address'];
             $organization->save();
-            
-            return redirect()->route('organization.profile')->with('success', 'Yay, Profile updated sucessfully');
+
+            return redirect()->route('organization.home')->with('success', 'Yay, Profile updated sucessfully');
 
         } catch (\Throwable $th) {
-            
-            return redirect()->route('organization.profile')->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
+
+            return redirect()->route('organization.home')->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
 
@@ -113,8 +119,8 @@ class OrganizationController extends Controller
 
         // Get all requests for pets under this organization
         $requests = AdoptionApplication::where('organization_id', $organization->id)->with(['pet', 'adopter'])->get();
-
-        return view('organization.adoptionRequests', ['requests' => $requests]);
+        //return response()->json($organization->);
+        return view('organization.adoptionRequests', compact('requests'));
     }
 
     public function updateAdoptionStatus(Request $request, $id)

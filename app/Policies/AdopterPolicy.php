@@ -19,7 +19,8 @@ class AdopterPolicy
         //
     }
 
-    public function submit(User $user){
+    public function submit(User $user)
+    {
         return $user->role === 'adopter';
     }
 
