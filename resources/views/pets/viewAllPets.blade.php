@@ -32,10 +32,6 @@
                         <!-- Search Button -->
                         <button type="submit" class="btn btn-primary">Search</button>
                     </form>
-
-                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary mt-2">
-                        <i class="bi bi-arrow-left"></i> Back
-                    </a>
                 </div>
 
                 <!-- Success and Error Messages -->

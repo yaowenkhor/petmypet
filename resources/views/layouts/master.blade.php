@@ -25,12 +25,18 @@
                 <div>
                     <ul class="navbar-nav flex-row">
                         <li class="nav-item me-4">
-                            <a class="nav-link" href="{{ route('home') }}">Home</a>
+                            <a class="nav-link" href="{{ route('pet.index') }}">Home</a>
                         </li>
 
                         @if (Auth::guard('adopter')->check() || Auth::guard('organization')->check() || Auth::guard('admin')->check())
                             <li class="nav-item me-4">
-                                <a class="nav-link" href="#">Profile</a>
+                                @if (Auth::guard('adopter')->check())
+                                    <a class="nav-link" href="{{ route('adopter.home') }}">Profile</a>
+                                @elseif (Auth::guard('organization')->check())
+                                    <a class="nav-link" href="{{ route('organization.home') }}">Profile</a>
+                                @elseif (Auth::guard('admin')->check())
+                                    <a class="nav-link" href="{{ route('admin.home') }}">Profile</a>
+                                @endif
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('logout') }}"
