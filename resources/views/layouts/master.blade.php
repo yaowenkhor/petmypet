@@ -19,7 +19,14 @@
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #6a0dad;">
             <div class="container-fluid d-flex justify-content-between align-items-center px-5">
                 <!-- Left side: Brand -->
-                <a class="navbar-brand mb-0 h1 fw-normal" href="{{ route('pet.index') }}">PetMyPet</a>
+                <div class="d-flex align-items-center">
+                    <a class="navbar-brand mb-0 h1 fw-normal d-flex align-items-center" href="{{ route('pet.index') }}"
+                        style="font-family: 'Quicksand', 'Verdana', sans-serif;">
+                        <img src="{{ asset('images/logo.jpeg') }}" alt="logo" class="me-2"
+                            style="height: 30px; width: auto; border-radius: 10px;">
+                        PetMyPet
+                    </a>
+                </div>
 
                 <!-- Right side: Nav links -->
                 <div>
@@ -43,7 +50,8 @@
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Logout
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
                                     @csrf
                                 </form>
                             </li>
@@ -54,7 +62,7 @@
                         @endif
                     </ul>
                 </div>
-            </div>
+                </img>
         </nav>
     </header>
 
