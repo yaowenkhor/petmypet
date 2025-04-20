@@ -70,7 +70,7 @@ class AdopterController extends Controller
         $req->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:6|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+            'password' => 'required|string|min:6|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
             'phone_number' => 'nullable|string|max:20',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

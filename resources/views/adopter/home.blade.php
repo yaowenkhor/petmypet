@@ -102,7 +102,7 @@
 
 
                             <div class="mb-3">
-                                <label for="password" class="form-label">New Password</label>
+                                <label for="password" class="form-label">Enter new password / Enter your password to confirm changes</label>
                                 <input type="password" name="password" class="form-control">
                                 @error('password')
                                     <div class="text-danger mt-1">{{ $message }}</div>
