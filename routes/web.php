@@ -76,10 +76,10 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
         Route::get('adopter/home', 'index')->name('adopter.home');
 
         // Show profile edit form
-        Route::get('adopter/profile', 'showEditProfile')->name('adopter.profile.editForm');
+        Route::get('adopter/profile', 'showEditProfile')->name('adopter.profile');
 
         // Submit profile update
-        Route::put('adopter/edit', 'editProfile')->name('adopter.profile.update');
+        Route::post('adopter/edit', 'editProfile')->name('adopter.profile.update');
 
         // submit adoption application
         Route::post('adopter/apply/{id}', 'submitApplication')->name('adoption.submit');

@@ -80,7 +80,7 @@
                                                     @method('PUT')
                                                     <div class="modal-body">
                                                         <p>Update the status for the adoption request of
-                                                            <strong>{{ $request->pet->name }}</strong> by
+                                                            <strong>{{ $request->pet->name ?? 'Unknown Pet' }}</strong> by
                                                             <strong>
                                                                 @if ($request->adopter && $request->adopter->user)
                                                                     {{ $request->adopter->user->name }}

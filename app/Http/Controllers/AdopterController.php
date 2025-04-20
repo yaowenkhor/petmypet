@@ -28,7 +28,7 @@ class AdopterController extends Controller
         $user = Auth::user();
         $pet = Pet::findOrFail($id);
 
-        if($pet->status != 'available') {
+        if ($pet->status != 'available') {
             return redirect()->back()->with('error', 'This pet is not available for adoption.');
         }
 
@@ -63,7 +63,7 @@ class AdopterController extends Controller
         $user = Auth::user()->load('adopter');
 
         //return response()->json($user);
-        return view('adopter.editProfile', compact('user'));
+        return view('adopter.home', compact('user'));
     }
 
 
@@ -74,7 +74,7 @@ class AdopterController extends Controller
         $req->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'required|string|min:6|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+            'password' => 'nullable|string|min:6|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
             'phone_number' => 'nullable|string|max:20',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -87,6 +87,7 @@ class AdopterController extends Controller
             }
             $path = $image->store('profile_images', 'public');
             $user->image_path = $path;
+            logger("Image uploaded: " . $path);
         }
 
         $user->name = $req->name;
