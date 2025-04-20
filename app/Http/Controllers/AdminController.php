@@ -131,9 +131,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role !== 'admin') {
-            abort(403);
-        }
+        $this->authorize('deletePet', $user);
 
         $pet = Pet::findOrFail($id);
 

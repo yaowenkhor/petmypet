@@ -90,7 +90,7 @@
                                         </a>
 
                                         <!-- Admin Delete Button -->
-                                        @if ($adminUser && $adminUser->role === 'admin')
+                                        @if (Auth::guard('admin')->check())
                                             <form action="{{ route('admin.pets.delete', $pet->id) }}" method="POST" class="mt-2"
                                                 onsubmit="return confirm('Are you sure you want to delete this pet?');">
                                                 @csrf

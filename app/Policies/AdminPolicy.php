@@ -35,5 +35,13 @@ class AdminPolicy
         return false;
     }
 
+    public function deletePet(User $user)
+    {
+        if ($user->role === 'admin') {
+            return true;
+        }
+        return false;
+    }
+
 
 }
