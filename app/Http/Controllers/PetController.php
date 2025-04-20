@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Pet;
 use App\Models\PetsImage;
 use Storage;
-use App\Models\ReportedPost;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
@@ -15,7 +14,7 @@ class PetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:organization')->except('index', 'displayDetails', 'search', 'report');
+        $this->middleware('auth:organization')->except('index', 'displayDetails', 'search');
     }
 
     protected function validator(array $data)
@@ -234,29 +233,5 @@ class PetController extends Controller
             return redirect()->back()->with('error', 'Oops! We couldn’t update your pet. Give it another shot!');
         }
 
-    }
-
-    public function report(Request $req, $id)
-    {
-        $pet = Pet::find($id);
-
-        $this->authorize('report', $pet);
-
-        $adopterId = auth()->id();
-
-        // Prevent duplicate report
-        $alreadyReported = ReportedPost::where('adopter_id', $adopterId)->where('pet_id', $id)->exists();
-
-        if ($alreadyReported) {
-            return redirect()->back()->with('error', 'You have already reported this post.');
-        }
-
-        ReportedPost::create([
-            'adopter_id' => $adopterId,
-            'pet_id' => $id,
-            'reason' => $req->reason,
-        ]);
-
-        return redirect()->back()->with('success', 'Post has been reported. Thank you.');
     }
 }
