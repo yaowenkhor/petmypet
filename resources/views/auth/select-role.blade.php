@@ -27,6 +27,11 @@
                     <img src="https://img.icons8.com/ios-filled/50/user.png" alt="Adopter">
                     <span>Adopter</span>
                 </div>
+
+                <div class="role-option" data-role="admin">
+                    <img src="https://img.icons8.com/?size=100&id=52233&format=png&color=000000" alt="Adopter">
+                    <span>Admin</span>
+                </div>
             </div>
 
             <button type="submit" class="btn blue">Continue</button>
