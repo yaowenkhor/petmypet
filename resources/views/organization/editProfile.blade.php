@@ -75,8 +75,7 @@
 
                             <div class="mb-3">
                                 <label for="details" class="form-label">Details</label>
-                                <textarea name="details" id="details" class="form-control" rows="4"
-                                    required>{{ old('details', $user->organization->details) }}</textarea>
+                                <textarea name="details" id="details" class="form-control" rows="4" required>{{ old('details', $user->organization->details) }}</textarea>
                                 @error('details')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -84,8 +83,7 @@
 
                             <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
-                                <textarea name="address" id="address" class="form-control" rows="3"
-                                    required>{{ old('address', $user->organization->address) }}</textarea>
+                                <textarea name="address" id="address" class="form-control" rows="3" required>{{ old('address', $user->organization->address) }}</textarea>
                                 @error('address')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

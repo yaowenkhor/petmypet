@@ -54,13 +54,11 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <!-- Update Button -->
                                     <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#updateStatusModal-{{ $request->id }}">
                                         Update
                                     </button>
 
-                                    <!-- Update Status Modal -->
                                     <div class="modal fade" id="updateStatusModal-{{ $request->id }}" tabindex="-1"
                                         aria-labelledby="updateStatusModalLabel-{{ $request->id }}" aria-hidden="true">
                                         <div class="modal-dialog">

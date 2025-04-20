@@ -25,16 +25,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function () {
 
-    Route::get('adopter/register', 'displayAdopterRegisterForm')->name('adopter.login.form');
+    Route::get('adopter/register', 'displayAdopterRegisterForm')->name('adopter.register.form');
     Route::get('organization/register', 'displayOrganizationRegisterForm')->name('organization.login.form');
     Route::get('admin/register', 'displayAdminRegisterForm')->name('admin.login.form');
 
 
-    //Create routing for user register as a adopter
     Route::post('adopter/register', 'createAdopter')->name('adopter.register');
-    //Create routing for user register as a organization
     Route::post('organization/register', 'createOrganization')->name('organization.register');
-    //Create routing for user register as a admin
     Route::post('admin/register', 'createAdmin')->name('admin.register');
 });
 
@@ -44,11 +41,9 @@ Route::controller(App\Http\Controllers\Auth\LoginController::class)->group(funct
     Route::get('organization/login', 'displayOrganizationLoginForm')->name('organization.login.form');
     Route::get('admin/login', 'displayAdminLoginForm')->name('admin.login.form');
 
-    //Create routing for user login as a adopter
+
     Route::post('adopter/login', 'loginAdopter')->name('adopter.login');
-    //Create routing for user login as a organization
     Route::post('organization/login', 'loginOrganization')->name('organization.login');
-    //Create routing for user login as a admin
     Route::post('admin/login', 'loginAdmin')->name('admin.login');
 });
 

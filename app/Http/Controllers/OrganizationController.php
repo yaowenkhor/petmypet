@@ -39,8 +39,6 @@ class OrganizationController extends Controller
 
         $petCounts =  $organzation->pets()->count();
 
-
-        //return response()->json($user);
         return view("organization.home", compact('user', 'petCounts'));
     }
 
@@ -117,9 +115,8 @@ class OrganizationController extends Controller
 
         $this->authorize('view', $organization);
 
-        // Get all requests for pets under this organization
         $requests = AdoptionApplication::where('organization_id', $organization->id)->with(['pet', 'adopter'])->get();
-        //return response()->json($organization->);
+
         return view('organization.adoptionRequests', compact('requests'));
     }
 
@@ -130,43 +127,35 @@ class OrganizationController extends Controller
 
         $this->authorize('update', $organization);
 
-        // Validate incoming request
         $request->validate([
             'status' => 'required|in:approved,rejected',
             'decision_message' => 'nullable|string|max:1000',
         ]);
 
-        // Find the adoption application by ID
         $adoption = AdoptionApplication::with('pet')->find($id);
 
-        // Check if the application exists
         if (!$adoption) {
 
             return redirect()->route('organization.adoptionRequests')->with('error', 'Opps, Adoption request not found.');
         }
 
-        // Update the application status and optional message
         $adoption->status = $request->status;
         $adoption->decision_message = $request->decision_message;
         $adoption->save();
 
-        // If approved, mark the pet as adopted and reject other pending requests
         if ($request->status === 'approved') {
             $pet = $adoption->pet;
 
-            // Update pet status if it's still available
             if ($pet && $pet->status !== 'adopted') {
                 $pet->status = 'adopted';
                 $pet->save();
             }
 
-            // Auto-reject all other pending applications for this pet
             AdoptionApplication::where('pet_id', $pet->id)
                 ->where('id', '!=', $adoption->id)
                 ->where('status', 'pending')
                 ->update(['status' => 'rejected']);
         }
-        // Return success message
         return redirect()->route('organization.adoptionRequests')->with('success', 'Yay, Adoption request updated successfully.');
     }
 }

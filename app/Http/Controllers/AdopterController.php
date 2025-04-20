@@ -49,15 +49,12 @@ class AdopterController extends Controller
             $data['organization_id'] = $organization_id;
             $data['question'] = $request->question;
 
-            // Create record
             AdoptionApplication::create($data);
 
-            // Redirect
             return redirect()->back()->with('success', 'Application submitted.');
         }
     }
 
-    // Show edit form for adopter profile
     public function showEditProfile()
     {
         $user = Auth::user()->load('adopter');
@@ -67,7 +64,6 @@ class AdopterController extends Controller
     }
 
 
-    // Handle profile update for adopter
     public function editProfile(Request $req)
     {
         $user = Auth::user();
@@ -96,7 +92,6 @@ class AdopterController extends Controller
         $user->password = bcrypt($req->password);
         $user->save();
 
-        //return response()->json($user);
         return redirect()->route('adopter.profile')->with('success', 'Profile updated successfully');
     }
 

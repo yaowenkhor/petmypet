@@ -33,12 +33,6 @@ class AdminController extends Controller
 
         $organizationApproval = OrganizationApproval::all();
 
-        // return response()->json([
-        //     'pending' => $pending,
-        //     'approved' => $approved,
-        //     'rejected' => $rejected,
-        //     'organizationApproval' => $organizationApproval,
-        // ]);
         return view("admin.organization", compact("pending", "approved", "rejected", "organizationApproval"));
     }
 

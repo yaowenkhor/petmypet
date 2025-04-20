@@ -49,7 +49,7 @@ class PetController extends Controller
     public function displayDetails($id)
     {
         $pet = Pet::with('images')->findOrFail($id);
-        //return response()->json($pet);
+
         return view('pets.viewPetDetails', ['pets' => $pet]);
     }
 
@@ -92,7 +92,6 @@ class PetController extends Controller
 
         $pets = $pets->with('images')->paginate(9);
 
-        //return response()->json($pets);
         return view('pets.viewAllPets', compact('pets', 'showGreeting'));
     }
 
@@ -102,8 +101,7 @@ class PetController extends Controller
         $organization = $user->organization;
 
         $pets = $organization->pets()->with('images')->get();
-
-        //return response()->json($pets);
+;
         return view('pets.organizationPets', ['pets' => $pets]);
     }
 
@@ -127,10 +125,10 @@ class PetController extends Controller
             $data['organization_id'] = $organization->id;
 
             if (!$req->hasFile('image_path')) {
-                //return response()->json(['error' => 'No images uploaded.'], 400);
+
                 return redirect()->back()->withInput()->with('error', 'Ehh, Please upload at least one image.');
             } else if ($req->hasFile('image_path') && count($req->file('image_path')) > 4) {
-                //return response()->json(['error' => 'You can upload a maximum of 4 images.'], 400);
+
                 return redirect()->back()->withInput()->with('error', 'Ehh, You can upload a maximum of 4 images.');
             }
 
@@ -150,11 +148,10 @@ class PetController extends Controller
                 ]);
             }
 
-            //return response()->json($pet);
             return redirect()->route('pet.show')->with('success', 'Yay! Your pet has been listed successfully.');
 
         } catch (\Throwable $th) {
-            //return response()->json(['error' => $th->getMessage()], 500);
+
             return redirect()->back()->withInput()->with('error', 'Oops! We couldn’t list your pet. Give it another shot!');
         }
     }
@@ -174,11 +171,10 @@ class PetController extends Controller
             }
             $pet->delete();
 
-            //return response()->json(['success' => 'Pet deleted successfully'], 200);
             return redirect()->route('pet.show')->with('success', 'Yay! Your pet has been deleted successfully.');
 
         } catch (\Throwable $th) {
-            //return response()->json(['error' => $th->getMessage()], 500);
+
             return redirect()->back()->with('error', 'Oops! We couldn’t delete your pet. Give it another shot!');
         }
     }
@@ -210,7 +206,7 @@ class PetController extends Controller
                 $images = $req->file('image_path');// This an array of images , use image_path[] in the form
 
                 if (count($images) > 4) {
-                    //return response()->json(['error' => 'You can upload a maximum of 4 images.'], 400);
+
                     return redirect()->back()->with('error', 'Ehh, You can upload a maximum of 4 images.');
                 }
 
@@ -231,10 +227,10 @@ class PetController extends Controller
             }
             $pet->update($data);
 
-            //return response()->json(['success' => 'Yup! Your pet has been updated successfully'], 200);
+
             return redirect()->route('pet.show')->with('success', 'Yup! Your pet has been updated successfully');
         } catch (\Throwable $th) {
-            //return response()->json(['error' => $th->getMessage()], 500);
+
             return redirect()->back()->with('error', 'Oops! We couldn’t update your pet. Give it another shot!');
         }
 
