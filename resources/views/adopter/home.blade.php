@@ -60,6 +60,7 @@
                     </div>
                     <div class="card-body">
                         <form action="{{ route('adopter.profile.update') }}" method="POST" enctype="multipart/form-data">
+                            @method('PUT')
                             @csrf
 
                             <div class="mb-3">

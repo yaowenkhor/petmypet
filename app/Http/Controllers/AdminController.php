@@ -104,10 +104,6 @@ class AdminController extends Controller
     {
         $admin = Auth::user();
 
-        if ($admin->role !== 'admin') {
-            abort(403); // Prevent others from accessing
-        }
-
         return view('admin.edit-profile', compact('admin'));
     }
 
