@@ -25,12 +25,18 @@ class AdminController extends Controller
 
         $this->authorize('viewDashboard', $user);
 
-        $pending = Organization::where('status', 'pending')->get();
-        $approved = Organization::where('status', 'approved')->get();
-        $rejected = Organization::where('status', 'rejected')->get();
+        $pending = Organization::where('status', 'pending')->with('user')->get();
+        $approved = Organization::where('status', 'approved')->with('user')->get();
+        $rejected = Organization::where('status', 'rejected')->with('user')->get();
 
         $organizationApproval = OrganizationApproval::all();
 
+        // return response()->json([
+        //     'pending' => $pending,
+        //     'approved' => $approved,
+        //     'rejected' => $rejected,
+        //     'organizationApproval' => $organizationApproval,
+        // ]);
         return view("admin.organization", compact("pending", "approved", "rejected", "organizationApproval"));
     }
 

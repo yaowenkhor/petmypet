@@ -31,6 +31,8 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Details</th>
+                                <th>Address</th>
                                 <th>Submitted At</th>
                                 <th>Actions</th>
                             </tr>
@@ -38,15 +40,17 @@
                         <tbody>
                             @foreach ($pending as $org)
                                 <tr>
-                                    <td>{{ $org->name }}</td>
-                                    <td>{{ $org->email }}</td>
+                                    <td>{{ $org->user->name }}</td>
+                                    <td>{{ $org->user->email }}</td>
+                                    <td>{{$org->details}}</td>
+                                    <td>{{$org->address}}</td>
                                     <td>{{ $org->created_at->format('Y-m-d') }}</td>
                                     <td>
-                                        <form action="{{ route('admin.approve.org', $org->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.approve', $org->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             <button class="btn btn-success btn-sm">Approve</button>
                                         </form>
-                                        <form action="{{ route('admin.reject.org', $org->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.approve', $org->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             <button class="btn btn-danger btn-sm">Reject</button>
                                         </form>
@@ -70,7 +74,7 @@
                 @else
                     <ul class="list-group">
                         @foreach ($approved as $org)
-                            <li class="list-group-item">{{ $org->name }} ({{ $org->email }})</li>
+                            <li class="list-group-item">{{ $org->user->name }} ({{ $org->user->email }})</li>
                         @endforeach
                     </ul>
                 @endif
@@ -88,7 +92,7 @@
                 @else
                     <ul class="list-group">
                         @foreach ($rejected as $org)
-                            <li class="list-group-item">{{ $org->name }} ({{ $org->email }})</li>
+                            <li class="list-group-item">{{ $org->user->name }} ({{ $org->user->email }})</li>
                         @endforeach
                     </ul>
                 @endif
@@ -117,7 +121,7 @@
                         <tbody>
                             @foreach ($organizationApproval as $log)
                                 <tr>
-                                    <td>{{ $log->organization->name ?? 'N/A' }}</td>
+                                    <td>{{ $log->organization->user->name ?? 'N/A' }}</td>
                                     <td>{{ ucfirst($log->status) }}</td>
                                     <td>{{ $log->user->name ?? 'Admin' }}</td>
                                     <td>{{ $log->message }}</td>
