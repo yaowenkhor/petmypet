@@ -55,12 +55,18 @@
                                         <td>
                                             @php
                                                 $status = strtolower($user->organization->status);
-                                                $badgeClass = match ($status) {
-                                                    'approved' => 'bg-success',
-                                                    'pending' => 'bg-warning text-dark',
-                                                    'rejected' => 'bg-danger',
-                                                    default => 'bg-secondary'
-                                                };
+                                                $badgeClass = '';
+
+                                                // Using if-else instead of match
+                                                if ($status === 'approved') {
+                                                    $badgeClass = 'bg-success';
+                                                } elseif ($status === 'pending') {
+                                                    $badgeClass = 'bg-warning text-dark';
+                                                } elseif ($status === 'rejected') {
+                                                    $badgeClass = 'bg-danger';
+                                                } else {
+                                                    $badgeClass = 'bg-secondary';
+                                                }
                                             @endphp
 
                                             <div class="d-flex justify-content-between align-items-center w-100">
@@ -82,7 +88,7 @@
                                         <th class="bg-light">Pet Count</th>
                                         <td>
                                             <div class="d-flex justify-content-between align-items-center w-100">
-                                                <span>1</span>
+                                                <span>{{$petCounts}}</span>
                                                 <div>
                                                     <a href="{{ route('pet.create.form') }}"
                                                         class="btn btn-outline-success btn-sm ms-3">

@@ -4,10 +4,22 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-12">
+                @if ($showGreeting)
+                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        We hope you find your perfect pet companion here! Feel free to explore and let us know if you have any questions.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                @endif
                 <!-- Search and Filter Section -->
                 <div class="text-center mb-4">
                     <h2 class="text-primary fw-bold">All Pets</h2>
                     <p class="text-muted">Browse through all the pets available for adoption.</p>
+                    @if (!session('logged_in'))
+                        <div class="alert alert-info text-center" role="alert">
+                            <strong>Note:</strong> You are currently viewing as a guest. To adopt a pet, please <span><a href="{{route('adopter.login.form')}}">log in</a></span> or
+                            <span><a href="{{route('adopter.login.form')}}">register</a></span>.
+                        </div>
+                    @endif
 
                     <!-- Search and Filter Form -->
                     <form action="{{ route('pet.search') }}" method="GET" class="d-flex justify-content-center mb-3">
@@ -32,10 +44,6 @@
                         <!-- Search Button -->
                         <button type="submit" class="btn btn-primary">Search</button>
                     </form>
-
-                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary mt-2">
-                        <i class="bi bi-arrow-left"></i> Back
-                    </a>
                 </div>
 
                 <!-- Success and Error Messages -->
@@ -83,6 +91,10 @@
                                 </div>
                             </div>
                         @endforeach
+                    </div>
+                    <!-- After your pets listing -->
+                    <div class="d-flex justify-content-center mt-4">
+                            {{ $pets->links() }}
                     </div>
                 @endif
 

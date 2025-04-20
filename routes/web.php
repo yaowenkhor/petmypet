@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/selectrole', function () {
     return view('auth.select-role');
 });
@@ -115,7 +111,7 @@ Route::controller(App\Http\Controllers\PetController::class)->group(function () 
         Route::get('pet/organization', 'show')->name('pet.show');
     });
 
-    Route::get('pets/all', 'index')->name('pet.index');
+    Route::get('/', 'index')->name('pet.index');
     Route::get('pets/search', 'search')->name('pet.search');
 
     Route::get('pet/details/{id}', 'displayDetails')->name('pet.details');

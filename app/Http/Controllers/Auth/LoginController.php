@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Cookie;
 use Auth;
 
 use Illuminate\Http\Request;
@@ -74,8 +75,7 @@ class LoginController extends Controller
                 'role' => 'admin',
             ], $req->get('remember'))
         ) {
-            //For checking purpose
-            //dd(Auth::guard('admin')->user()->role);
+            $req->session()->put('logged_in', true);
             return redirect()->intended('admin/home')->with('success', 'Yay, Login successful!');
         }
         return redirect()->back()->withInput($req->only('email', 'remember'))->withErrors([
@@ -97,8 +97,7 @@ class LoginController extends Controller
                 'role' => 'adopter',
             ], $req->get('remember'))
         ) {
-            //For checking purpose
-            //dd(Auth::guard('adopter')->user()->role);
+            $req->session()->put('logged_in', true);
             return redirect()->intended('adopter/home')->with('success', 'Yay, Login successful!');
 
         }
@@ -120,9 +119,7 @@ class LoginController extends Controller
                 'role' => 'organization',
             ], $req->get('remember'))
         ) {
-            //For checking purpose
-            //dd(Auth::guard('organization')->user()->role);
-            //return redirect()->intended('adopter/dashboard');
+            $req->session()->put('logged_in', true);
             return redirect()->intended('organization/home')->with('success', 'Yay, Login successful!');
 
         }
@@ -131,7 +128,7 @@ class LoginController extends Controller
         ]);
     }
 
-    public function loginSelectRole(Request $req)
+    public function loginSelectRole()
     {
         $role = request('role');
         if ($role === 'organization') {
@@ -141,4 +138,5 @@ class LoginController extends Controller
         }
         return redirect('/selectrole')->with('error', 'Invalid role selected');
     }
+
 }

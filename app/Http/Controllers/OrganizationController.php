@@ -34,8 +34,14 @@ class OrganizationController extends Controller
     public function index()
     {
         $user = Auth::user()->load('organization.approvals');
+
+        $organzation = $user->organization;
+
+        $petCounts =  $organzation->pets()->count();
+
+
         //return response()->json($user);
-        return view("organization.home", ["user" => $user]);
+        return view("organization.home", compact('user', 'petCounts'));
     }
 
     public function reapply()
@@ -113,8 +119,8 @@ class OrganizationController extends Controller
 
         // Get all requests for pets under this organization
         $requests = AdoptionApplication::where('organization_id', $organization->id)->with(['pet', 'adopter'])->get();
-        //return response()->json($requests);
-        return view('organization.adoptionRequests', ['requests' => $requests]);
+        //return response()->json($organization->);
+        return view('organization.adoptionRequests', compact('requests'));
     }
 
     public function updateAdoptionStatus(Request $request, $id)

@@ -43,11 +43,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $request->pet->name ?? 'N/A' }}</td>
                                 <td>
-                                    @if ($request->adopter && $request->adopter->user)
-                                        {{ $request->adopter->user->name }}
-                                    @else
-                                        Unknown Adopter
-                                    @endif
+                                    {{ $request->adopter->name }}
                                 </td>
                                 <td>{{ $request->question ?? 'No reason provided' }}</td>
                                 <td>
@@ -70,7 +66,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="updateStatusModalLabel-{{ $request->id }}">
+                                                    <h5 class="modal-title"
+                                                        id="updateStatusModalLabel-{{ $request->id }}">
                                                         Update Adoption Request Status
                                                     </h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -94,7 +91,8 @@
                                                         </p>
                                                         <div class="mb-3">
                                                             <label for="status" class="form-label">Status</label>
-                                                            <select class="form-select" id="status" name="status" required>
+                                                            <select class="form-select" id="status" name="status"
+                                                                required>
                                                                 <option value="approved"
                                                                     {{ $request->status === 'approved' ? 'selected' : '' }}>
                                                                     Approved
@@ -108,14 +106,14 @@
                                                         <div class="mb-3">
                                                             <label for="decision_message" class="form-label">Decision
                                                                 Message (Optional)</label>
-                                                            <textarea class="form-control" id="decision_message"
-                                                                name="decision_message" rows="3">{{ $request->decision_message }}</textarea>
+                                                            <textarea class="form-control" id="decision_message" name="decision_message" rows="3">{{ $request->decision_message }}</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-outline-secondary"
                                                             data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-outline-primary">Update</button>
+                                                        <button type="submit"
+                                                            class="btn btn-outline-primary">Update</button>
                                                     </div>
                                                 </form>
                                             </div>

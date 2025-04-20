@@ -26,9 +26,11 @@ class AdopterController extends Controller
     public function submitApplication(Request $request, $id)
     {
         $user = Auth::user();
-
-
         $pet = Pet::findOrFail($id);
+
+        if($pet->status != 'available') {
+            return redirect()->back()->with('error', 'This pet is not available for adoption.');
+        }
 
         $existingApplication = AdoptionApplication::where('adopter_id', $user->id)
             ->where('pet_id', $id)
