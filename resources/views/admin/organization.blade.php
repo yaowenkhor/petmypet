@@ -50,7 +50,7 @@
                                             @csrf
                                             <button class="btn btn-success btn-sm">Approve</button>
                                         </form>
-                                        <form action="{{ route('admin.approve', $org->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.reject', $org->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             <button class="btn btn-danger btn-sm">Reject</button>
                                         </form>

@@ -85,7 +85,7 @@ class AdminController extends Controller
                 'organization_id' => $organization->id,
                 'user_id' => $user->id,
                 'status' => 'rejected',
-                'message' => 'Oh dear, Organization rejected! Please try tp reapply!'
+                'message' => 'Organization rejected! Please try to reapply!'
             ]);
 
             return redirect()->back()->with('success', 'Yay, Organization approved successfully!');

@@ -60,7 +60,7 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function (
 
         Route::get('admin/organization-applications', 'organizationApplications')->name('admin.org.applications');
         Route::post('admin/approve/{id}', 'approveOrganization')->name('admin.approve');
-        Route::post('admin/reject/{id}', 'rejectOrganization')->name('admin.approve');
+        Route::post('admin/reject/{id}', 'rejectOrganization')->name('admin.reject');
 
         Route::get('admin/profile', 'editProfile')->name('admin.profile.edit');
         Route::post('admin/profile', 'updateProfile')->name('admin.profile.update');
