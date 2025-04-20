@@ -135,6 +135,8 @@ class LoginController extends Controller
             return redirect('/organization/login');
         } elseif ($role === 'adopter') {
             return redirect('/adopter/login');
+        }elseif ($role === 'admin') {
+            return redirect('/admin/login');
         }
         return redirect('/selectrole')->with('error', 'Invalid role selected');
     }
