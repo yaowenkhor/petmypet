@@ -57,7 +57,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',],
             'phone_number' => ['required', 'numeric', 'max:15'],
-        ],[
+        ], [
             'password.regex' => 'Password must contain at least one letter, one number, and one special character.',
         ]);
     }
@@ -108,11 +108,10 @@ class RegisterController extends Controller
                 'user_id' => $user->id,
             ]);
 
-            //return response()->json($user);
             return redirect('adopter/login')->with('success', 'Yay, Adopter registered successfully! Please login to continue !');
 
         } catch (\Throwable $th) {
-            //return response()->json(['error' => $th->getMessage()], 500);
+
             return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
@@ -121,7 +120,7 @@ class RegisterController extends Controller
     {
         $this->validator($req->all())->validate();
 
-        Validator::make($req->all(),[
+        Validator::make($req->all(), [
             'details' => 'required|string',
             'address' => 'required|string',
         ])->validate();
@@ -142,30 +141,29 @@ class RegisterController extends Controller
                 'details' => $req['details'],
                 'address' => $req['address'],
             ]);
-
-            //return response()->json($user);
             return redirect('organization/login')->with('success', 'Yay, Organization registered successfully! Please login to continue !');
 
         } catch (\Throwable $th) {
-            //return response()->json(['error' => $th->getMessage()], 500);
+
             return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }
 
-    protected function createAdmin(Request $req){
+    protected function createAdmin(Request $req)
+    {
         $this->validator($req->all())->validate();
 
         try {
             $data = $req->all();
             $data['role'] = 'admin';
 
-            $user = $this->create($data);
+            $this->create($data);
 
-            //return response()->json($user);
+
             return redirect('adopter/login')->with('success', 'Yay, Adopter registered successfully! Please login to continue !');
 
         } catch (\Throwable $th) {
-            //return response()->json(['error' => $th->getMessage()], 500);
+
             return redirect()->back()->with('error', 'Oops, Something went wrong during resgistration ! Please try again!');
         }
     }

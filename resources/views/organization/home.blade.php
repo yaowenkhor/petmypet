@@ -88,7 +88,7 @@
                                         <th class="bg-light">Pet Count</th>
                                         <td>
                                             <div class="d-flex justify-content-between align-items-center w-100">
-                                                <span>{{$petCounts}}</span>
+                                                <span>{{ $petCounts }}</span>
                                                 <div>
                                                     <a href="{{ route('pet.create.form') }}"
                                                         class="btn btn-outline-success btn-sm ms-3">

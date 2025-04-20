@@ -67,8 +67,8 @@
                                                         <div class="d-flex">
                                                             <a href="{{ route('pet.update', $pet->id) }}"
                                                                 class="btn btn-outline-primary btn-sm me-2">Edit</a>
-                                                            <form action="{{ route('pet.delete', $pet->id) }}" method="POST"
-                                                                class="d-inline-block">
+                                                            <form action="{{ route('pet.delete', $pet->id) }}"
+                                                                method="POST" class="d-inline-block">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="btn btn-outline-danger btn-sm"
