@@ -4,17 +4,13 @@
     <div class="container py-5">
         <h2 class="text-center mb-4 ">Edit Profile</h2>
 
-        {{-- Back Button --}}
         <div class="mb-4">
             <a href="{{ route('admin.home') }}" class="btn btn-outline-secondary">⬅ Back to Dashboard</a>
         </div>
 
-        {{-- Flash Messages --}}
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-
-        {{-- Validation Errors --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
@@ -35,7 +31,8 @@
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input name="email" type="email" class="form-control" value="{{ old('email', $admin->email) }}" required>
+                <input name="email" type="email" class="form-control" value="{{ old('email', $admin->email) }}"
+                    required>
             </div>
 
             <div class="mb-3">

@@ -31,12 +31,6 @@ class AdminController extends Controller
 
         $organizationApproval = OrganizationApproval::all();
 
-        // return response()->json([
-        //     'pending' => $pending,
-        //     'approved' => $approved,
-        //     'rejected' => $rejected,
-        //     'organizationApproval' => $organizationApproval,
-        // ]);
         return view("admin.organization", compact("pending", "approved", "rejected", "organizationApproval"));
     }
 
@@ -103,7 +97,7 @@ class AdminController extends Controller
         $admin = Auth::user();
 
         if ($admin->role !== 'admin') {
-            abort(403); // Prevent others from accessing
+            abort(403); 
         }
 
         return view('admin.edit-profile', compact('admin'));
