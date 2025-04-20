@@ -4,8 +4,15 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8">
+                @if (!session('logged_in'))
+                    <div class="alert alert-info text-center" role="alert">
+                        <strong>Note:</strong> You are currently viewing as a guest. To adopt a pet, please <span><a
+                                href="{{ route('adopter.login.form') }}">log in</a></span> or
+                        <span><a href="{{ route('adopter.login.form') }}">register</a></span>.
+                    </div>
+                @endif
                 <div class="card border-1 rounded shadow-sm">
-                    <div class="card-header bg-white text-center" style="padding-top: 20px; padding-bottom: 15px;">
+                    <div class="card-header bg-white text-center" style="padding-top: 20px; padding-bottom: 5px;">
                         <h2 class="text-primary fw-bold">{{ $pets->name }}</h2>
                     </div>
 
@@ -29,8 +36,9 @@
                                 <div class="row">
                                     @foreach ($pets->images as $image)
                                         <div class="col-md-6 mb-3">
-                                            <img src="{{ asset('storage/' . $image->image_path) }}" class="img-fluid rounded"
-                                                alt="Pet Image" style="max-height: 300px; object-fit: cover; width: 100%;">
+                                            <img src="{{ asset('storage/' . $image->image_path) }}"
+                                                class="img-fluid rounded" alt="Pet Image"
+                                                style="max-height: 300px; object-fit: cover; width: 100%;">
                                         </div>
                                     @endforeach
                                 </div>
@@ -53,7 +61,7 @@
                         </p>
 
                         <!-- Button trigger modal -->
-                        @if (Auth::guard('adopter')->check())
+                        @if (Auth::guard('adopter')->check() && $pets->status === 'available')
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#adoptionModal">
                                 Request Adoption
@@ -77,8 +85,7 @@
                                             <div class="mb-3">
                                                 <label for="question" class="form-label">Why would you like to adopt this
                                                     pet?</label>
-                                                <textarea class="form-control" id="question" name="question" rows="3"
-                                                    required></textarea>
+                                                <textarea class="form-control" id="question" name="question" rows="3"></textarea>
                                             </div>
                                         </div>
                                         <div class="modal-footer">

@@ -41,7 +41,7 @@ class PetController extends Controller
             $showGreeting = false;
         }
 
-        $pets = Pet::with('images')->get();
+        $pets = Pet::with('images')->paginate(5);
         //return response()->json($pets);
         return view('pets.viewAllPets', compact('pets', 'showGreeting'));
     }
@@ -83,7 +83,7 @@ class PetController extends Controller
             $pets->where('status', $status_filter);
         }
 
-        $pets = $pets->with('images')->get();
+        $pets = $pets->with('images')->paginate(5);
 
         //return response()->json($pets);
         return view('pets.viewAllPets', ['pets' => $pets]);

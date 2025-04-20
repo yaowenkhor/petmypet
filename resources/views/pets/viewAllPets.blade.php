@@ -8,6 +8,12 @@
                 <div class="text-center mb-4">
                     <h2 class="text-primary fw-bold">All Pets</h2>
                     <p class="text-muted">Browse through all the pets available for adoption.</p>
+                    @if (!session('logged_in'))
+                        <div class="alert alert-info text-center" role="alert">
+                            <strong>Note:</strong> You are currently viewing as a guest. To adopt a pet, please <span><a href="{{route('adopter.login.form')}}">log in</a></span> or
+                            <span><a href="{{route('adopter.login.form')}}">register</a></span>.
+                        </div>
+                    @endif
 
                     <!-- Search and Filter Form -->
                     <form action="{{ route('pet.search') }}" method="GET" class="d-flex justify-content-center mb-3">
@@ -79,6 +85,10 @@
                                 </div>
                             </div>
                         @endforeach
+                    </div>
+                    <!-- After your pets listing -->
+                    <div class="d-flex justify-content-center mt-4">
+                            {{ $pets->links() }}
                     </div>
                 @endif
 
