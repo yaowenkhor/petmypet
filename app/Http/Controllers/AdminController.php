@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Organization;
 use App\Models\OrganizationApproval;
+use App\Models\Pet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -133,5 +135,31 @@ class AdminController extends Controller
         $admin->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function deletePet($id)
+    {
+        $user = Auth::user();
+
+        if ($user->role !== 'admin') {
+            abort(403);
+        }
+
+        $pet = Pet::findOrFail($id);
+
+        // Delete associated images from storage
+        foreach ($pet->images as $image) {
+            if ($image->image_path && Storage::exists('public/' . $image->image_path)) {
+                Storage::delete('public/' . $image->image_path);
+            }
+        }
+
+        // Delete image records
+        $pet->images()->delete();
+
+        // Delete pet record
+        $pet->delete();
+
+        return redirect()->back()->with('success', 'Pet listing deleted successfully.');
     }
 }

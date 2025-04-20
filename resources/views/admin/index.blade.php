@@ -15,7 +15,7 @@
             </a>
 
             <a href="{{ route('pet.index') }}" class="dashboard-button">
-                📄 View Pet Listings
+                📄 Manage Pet Listings
             </a>
 
             <a href="{{ route('admin.profile.edit') }}" class="dashboard-button">

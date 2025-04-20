@@ -1,14 +1,19 @@
 @extends('layouts.master')
+@php
+    $loggedInUser = Auth::user(); // For 'user' or 'organization'
+    $adminUser = Auth::guard('admin')->user(); // For admin
+@endphp
 
 @section('content')
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 @if ($showGreeting)
-                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        We hope you find your perfect pet companion here! Feel free to explore and let us know if you have any questions.
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        We hope you find your perfect pet companion here! Feel free to explore and let us know if you have any
+                        questions.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
+                    </div>
                 @endif
                 <!-- Search and Filter Section -->
                 <div class="text-center mb-4">
@@ -16,7 +21,8 @@
                     <p class="text-muted">Browse through all the pets available for adoption.</p>
                     @if (!session('logged_in'))
                         <div class="alert alert-info text-center" role="alert">
-                            <strong>Note:</strong> You are currently viewing as a guest. To adopt a pet, please <span><a href="{{route('adopter.login.form')}}">log in</a></span> or
+                            <strong>Note:</strong> You are currently viewing as a guest. To adopt a pet, please <span><a
+                                    href="{{route('adopter.login.form')}}">log in</a></span> or
                             <span><a href="{{route('adopter.login.form')}}">register</a></span>.
                         </div>
                     @endif
@@ -84,9 +90,21 @@
                                                 {{ ucfirst($pet->status) }}
                                             </span>
                                         </p>
+
+                                        <!-- View Details Button -->
                                         <a href="{{ route('pet.details', $pet->id) }}" class="btn btn-outline-primary btn-sm w-100">
                                             View Details
                                         </a>
+
+                                        <!-- Admin Delete Button -->
+                                        @if ($adminUser && $adminUser->role === 'admin')
+                                            <form action="{{ route('admin.pets.delete', $pet->id) }}" method="POST" class="mt-2"
+                                                onsubmit="return confirm('Are you sure you want to delete this pet?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm w-100">Delete</button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -94,10 +112,9 @@
                     </div>
                     <!-- After your pets listing -->
                     <div class="d-flex justify-content-center mt-4">
-                            {{ $pets->links() }}
+                        {{ $pets->links() }}
                     </div>
                 @endif
-
             </div>
         </div>
     </div>
