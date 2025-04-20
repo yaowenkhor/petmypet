@@ -120,7 +120,8 @@
 
                             <div class="mb-3">
                                 <label for="name" class="form-label">Pet Name</label>
-                                <input type="text" name="name" id="name" class="form-control" value="{{old('name')}}" required>
+                                <input type="text" name="name" id="name" class="form-control"
+                                    value="{{ old('name') }}" required>
                                 @error('name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -140,7 +141,8 @@
 
                             <div class="mb-3">
                                 <label for="age" class="form-label">Age</label>
-                                <input type="number" name="age" id="age" class="form-control" value="{{old('age')}}" required>
+                                <input type="number" name="age" id="age" class="form-control"
+                                    value="{{ old('age') }}" required>
                                 @error('age')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -148,7 +150,8 @@
 
                             <div class="mb-3">
                                 <label for="breed" class="form-label">Breed</label>
-                                <input type="text" name="breed" id="breed" class="form-control" value="{{old('breed')}}" required>
+                                <input type="text" name="breed" id="breed" class="form-control"
+                                    value="{{ old('breed') }}" required>
                                 @error('breed')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -156,7 +159,8 @@
 
                             <div class="mb-3">
                                 <label for="size" class="form-label">Size</label>
-                                <input type="text" name="size" id="size" class="form-control" value="{{old('size')}}" required>
+                                <input type="text" name="size" id="size" class="form-control"
+                                    value="{{ old('size') }}" required>
                                 @error('size')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -164,7 +168,8 @@
 
                             <div class="mb-3">
                                 <label for="location" class="form-label">Location</label>
-                                <input type="text" name="location" id="location" class="form-control" value="{{old('location')}}" required>
+                                <input type="text" name="location" id="location" class="form-control"
+                                    value="{{ old('location') }}" required>
                                 @error('location')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -172,7 +177,8 @@
 
                             <div class="mb-3">
                                 <label for="temperament" class="form-label">Temperament</label>
-                                <input type="text" name="temperament" id="temperament" class="form-control" value="{{old('temperament')}}" required>
+                                <input type="text" name="temperament" id="temperament" class="form-control"
+                                    value="{{ old('temperament') }}" required>
                                 @error('temperament')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -180,8 +186,7 @@
 
                             <div class="mb-3">
                                 <label for="medical_history" class="form-label">Medical History</label>
-                                <textarea name="medical_history" id="medical_history" class="form-control"
-                                    rows="4" >{{old('medical_history')}}</textarea>
+                                <textarea name="medical_history" id="medical_history" class="form-control" rows="4">{{ old('medical_history') }}</textarea>
                                 @error('medical_history')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

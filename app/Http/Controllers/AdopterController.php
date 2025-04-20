@@ -28,7 +28,7 @@ class AdopterController extends Controller
         $user = Auth::user();
         $pet = Pet::findOrFail($id);
 
-        if($pet->status != 'available') {
+        if ($pet->status != 'available') {
             return redirect()->back()->with('error', 'This pet is not available for adoption.');
         }
 
@@ -49,25 +49,21 @@ class AdopterController extends Controller
             $data['organization_id'] = $organization_id;
             $data['question'] = $request->question;
 
-            // Create record
             AdoptionApplication::create($data);
 
-            // Redirect
             return redirect()->back()->with('success', 'Application submitted.');
         }
     }
 
-    // Show edit form for adopter profile
     public function showEditProfile()
     {
         $user = Auth::user()->load('adopter');
 
         //return response()->json($user);
-        return view('adopter.editProfile', compact('user'));
+        return view('adopter.home', compact('user'));
     }
 
 
-    // Handle profile update for adopter
     public function editProfile(Request $req)
     {
         $user = Auth::user();
@@ -87,6 +83,7 @@ class AdopterController extends Controller
             }
             $path = $image->store('profile_images', 'public');
             $user->image_path = $path;
+            logger("Image uploaded: " . $path);
         }
 
         $user->name = $req->name;
@@ -95,7 +92,6 @@ class AdopterController extends Controller
         $user->password = bcrypt($req->password);
         $user->save();
 
-        //return response()->json($user);
         return redirect()->route('adopter.profile')->with('success', 'Profile updated successfully');
     }
 

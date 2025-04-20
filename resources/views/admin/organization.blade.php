@@ -42,15 +42,16 @@
                                 <tr>
                                     <td>{{ $org->user->name }}</td>
                                     <td>{{ $org->user->email }}</td>
-                                    <td>{{$org->details}}</td>
-                                    <td>{{$org->address}}</td>
+                                    <td>{{ $org->details }}</td>
+                                    <td>{{ $org->address }}</td>
                                     <td>{{ $org->created_at->format('Y-m-d') }}</td>
                                     <td>
-                                        <form action="{{ route('admin.approve', $org->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.approve', $org->id) }}" method="POST"
+                                            class="d-inline">
                                             @csrf
                                             <button class="btn btn-success btn-sm">Approve</button>
                                         </form>
-                                        <form action="{{ route('admin.approve', $org->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.reject', $org->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             <button class="btn btn-danger btn-sm">Reject</button>
                                         </form>

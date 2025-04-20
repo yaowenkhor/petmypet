@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Organization;
 use App\Models\OrganizationApproval;
+use App\Models\Pet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -31,12 +33,6 @@ class AdminController extends Controller
 
         $organizationApproval = OrganizationApproval::all();
 
-        // return response()->json([
-        //     'pending' => $pending,
-        //     'approved' => $approved,
-        //     'rejected' => $rejected,
-        //     'organizationApproval' => $organizationApproval,
-        // ]);
         return view("admin.organization", compact("pending", "approved", "rejected", "organizationApproval"));
     }
 
@@ -85,7 +81,7 @@ class AdminController extends Controller
                 'organization_id' => $organization->id,
                 'user_id' => $user->id,
                 'status' => 'rejected',
-                'message' => 'Oh dear, Organization rejected! Please try tp reapply!'
+                'message' => 'Organization rejected! Please try to reapply!'
             ]);
 
             return redirect()->back()->with('success', 'Yay, Organization approved successfully!');
@@ -102,10 +98,6 @@ class AdminController extends Controller
     {
         $admin = Auth::user();
 
-        if ($admin->role !== 'admin') {
-            abort(403); // Prevent others from accessing
-        }
-
         return view('admin.edit-profile', compact('admin'));
     }
 
@@ -120,7 +112,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'password' => 'nullable|string|min:6|confirmed',
+            'password' => 'required|string|min:6|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
         ]);
 
         $admin->name = $request->name;
@@ -133,5 +125,29 @@ class AdminController extends Controller
         $admin->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function deletePet($id)
+    {
+        $user = Auth::user();
+
+        $this->authorize('deletePet', $user);
+
+        $pet = Pet::findOrFail($id);
+
+        // Delete associated images from storage
+        foreach ($pet->images as $image) {
+            if ($image->image_path && Storage::exists('public/' . $image->image_path)) {
+                Storage::delete('public/' . $image->image_path);
+            }
+        }
+
+        // Delete image records
+        $pet->images()->delete();
+
+        // Delete pet record
+        $pet->delete();
+
+        return redirect()->back()->with('success', 'Pet listing deleted successfully.');
     }
 }

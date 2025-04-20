@@ -42,7 +42,7 @@
                                 @elseif (Auth::guard('organization')->check())
                                     <a class="nav-link" href="{{ route('organization.home') }}">Profile</a>
                                 @elseif (Auth::guard('admin')->check())
-                                    <a class="nav-link" href="{{ route('admin.home') }}">Profile</a>
+                                    <a class="nav-link" href="{{ route('admin.home') }}">Dashboard</a>
                                 @endif
                             </li>
                             <li class="nav-item">
@@ -50,8 +50,7 @@
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Logout
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
                             </li>

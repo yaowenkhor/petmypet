@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @php
     if (!isset($url)) {
-        header("Location: " . url('/selectrole'));
+        header('Location: ' . url('/selectrole'));
         exit();
     }
 @endphp
@@ -31,7 +31,7 @@
                     <div class="card-body">
                         @isset($url)
                             <form method="POST" action="{{ url("$url/login") }}" class="form login-form">
-                        @endisset
+                            @endisset
 
                             @csrf
 
@@ -49,9 +49,7 @@
                             </div>
                             <div class="msg error">
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        {{ $message }}
-                                    </span>
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
 
@@ -69,25 +67,15 @@
                                     class="form-input @error('password') is-invalid @enderror" name="password" required
                                     autocomplete="current-password" placeholder="Password">
                             </div>
-                            <div class="msg error">
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        {{ $message }}
-                                    </span>
-                                @enderror
-                            </div>
+                            @error('password')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
 
-                            <div class="msg error">
-                                @if ($errors->has('error'))
-                                    <div class="invalid-feedback" role="alert">
-                                        {{ $errors->first('error') }}
-                                    </div>
-                                @endif
-                            </div>
+                            @if ($errors->has('error'))
+                                <div class="text-danger">{{ $errors->first('error') }}</div>
+                            @endif
 
                             <br>
-
-
 
                             <button type="submit" class="btn blue">
                                 {{ __('Login') }}

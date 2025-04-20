@@ -11,13 +11,13 @@
 
             <div class="register">
                 <div class="card-header">
-                    <h1>{{isset($url) ? ucwords($url) : " "}} {{ __('Register') }}</h1>
+                    <h1>{{ isset($url) ? ucwords($url) : ' ' }} {{ __('Register') }}</h1>
                 </div>
 
                 <div class="card-body">
                     @isset($url)
                         <form method="POST" action="{{ url("$url/register") }}" class="form login-form">
-                    @endisset
+                        @endisset
                         @csrf
 
 
@@ -29,16 +29,15 @@
                                 <path
                                     d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
                             </svg>
-                            <input id="name" type="text" class="form-input @error('name') is-invalid @enderror" name="name"
-                                value="{{ old('name') }}" placeholder="Name" required autocomplete="name" autofocus>
+                            <input id="name" type="text" class="form-input @error('name') is-invalid @enderror"
+                                name="name" value="{{ old('name') }}" placeholder="Name" required autocomplete="name"
+                                autofocus>
 
 
                         </div>
                         <div class="msg error">
                             @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </span>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -52,14 +51,14 @@
                                     d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z" />
                             </svg>
                             <input id="email" type="text" class="form-input @error('email') is-invalid @enderror"
-                                name="email" value="{{ old('email') }}" placeholder="Email" required autocomplete="email">
+                                name="email" value="{{ old('email') }}" placeholder="Email" required
+                                autocomplete="email">
 
 
                         </div>
                         <div class="msg error">
                             @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -81,9 +80,7 @@
                         </div>
                         <div class="msg error">
                             @error('phone_number')
-                                <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </span>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -102,9 +99,7 @@
                         </div>
                         <div class="msg error">
                             @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </span>
+                                <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -123,8 +118,7 @@
 
                         </div>
 
-                        @if(isset($url) && $url == 'organization')
-
+                        @if (isset($url) && $url == 'organization')
                             <label for="address" class="form-label">{{ __('Address') }}</label>
 
                             <div class="form-group">
@@ -133,8 +127,9 @@
                                     <path
                                         d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
                                 </svg>
-                                <input id="address" type="text" class="form-input @error('address') is-invalid @enderror"
-                                    name="address" placeholder="Address" required autocomplete="address">
+                                <input id="address" type="text"
+                                    class="form-input @error('address') is-invalid @enderror" name="address"
+                                    placeholder="Address" required autocomplete="address">
 
 
                             </div>
@@ -149,8 +144,8 @@
                             <label for="details" class="form-label">{{ __('Details') }}</label>
 
                             <div class="form-group">
-                                <textarea id="details" class="form-input @error('details') is-invalid @enderror" name="details"
-                                    required autocomplete="details" rows="4">{{ old('details') }}</textarea>
+                                <textarea id="details" class="form-input @error('details') is-invalid @enderror" name="details" required
+                                    autocomplete="details" rows="4">{{ old('details') }}</textarea>
 
                             </div>
                             <div class="msg error">

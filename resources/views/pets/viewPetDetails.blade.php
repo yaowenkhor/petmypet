@@ -8,7 +8,7 @@
                     <div class="alert alert-info text-center" role="alert">
                         <strong>Note:</strong> You are currently viewing as a guest. To adopt a pet, please <span><a
                                 href="{{ route('adopter.login.form') }}">log in</a></span> or
-                        <span><a href="{{ route('adopter.login.form') }}">register</a></span>.
+                        <span><a href="{{ route('adopter.register.form') }}">register</a></span>.
                     </div>
                 @endif
                 <div class="card border-1 rounded shadow-sm">
