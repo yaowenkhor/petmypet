@@ -517,3 +517,32 @@
     
 }
 
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.admin-dashboard .dashboard-button {
+  width: 100%;
+  padding: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #b065ec;
+  border-radius: 8px;
+  color: #333;
+  background-color: #e4c2ff;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+.admin-dashboard .dashboard-button:hover {
+  background-color: #b065ec;
+  color: white;
+  cursor: pointer;
+}
+

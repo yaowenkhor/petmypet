@@ -13,12 +13,14 @@ class Adopter extends Model
         'user_id',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function application(){
-        return $this->hasMany(AdoptionApplication::class);  
+    public function application()
+    {
+        return $this->hasMany(AdoptionApplication::class);
     }
 
 }

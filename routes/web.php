@@ -57,8 +57,13 @@ Route::controller(App\Http\Controllers\AdminController::class)->group(function (
     Route::group(['middleware' => 'auth:admin'], function () {
         Route::get('admin/home', 'index')->name('admin.home');
 
+
+        Route::get('admin/organization-applications', 'organizationApplications')->name('admin.org.applications');
         Route::post('admin/approve/{id}', 'approveOrganization')->name('admin.approve');
-        Route::post('admin/reject/{id}', 'rejectOrganization')->name('admin.reject');
+        Route::post('admin/reject/{id}', 'rejectOrganization')->name('admin.approve');
+
+        Route::get('admin/profile', 'editProfile')->name('admin.profile.edit');
+        Route::post('admin/profile', 'updateProfile')->name('admin.profile.update');
     });
 
 });
@@ -67,7 +72,7 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
 
     Route::group(['middleware' => 'auth:adopter'], function () {
         Route::get('adopter/home', 'index')->name('adopter.home');
-        
+
         // Show profile edit form
         Route::get('adopter/profile', 'showEditProfile')->name('adopter.profile.editForm');
 
@@ -78,7 +83,7 @@ Route::controller(App\Http\Controllers\AdopterController::class)->group(function
         Route::post('adopter/apply/{id}', 'submitApplication')->name('adoption.submit');
     });
 
-    
+
 
 });
 
@@ -92,7 +97,7 @@ Route::controller(App\Http\Controllers\OrganizationController::class)->group(fun
         Route::put('organization/edit', 'edit')->name('organization.edit');
 
         Route::get('organization/adoptionRequests', 'viewAdoptionRequests')->name('organization.adoptionRequests');
-        Route::put('organization/adoptionRequest/{id}/update','updateAdoptionStatus')->name('organization.updateAdoptionStatus');
+        Route::put('organization/adoptionRequest/{id}/update', 'updateAdoptionStatus')->name('organization.updateAdoptionStatus');
     });
 
 
@@ -117,7 +122,7 @@ Route::controller(App\Http\Controllers\PetController::class)->group(function () 
     Route::get('pet/details/{id}', 'displayDetails')->name('pet.details');
 
     // Adopter reports a pet post
-    Route::post('pet/{id}/report', 'report')->middleware('auth:adopter') ->name('pet.report');
+    Route::post('pet/{id}/report', 'report')->middleware('auth:adopter')->name('pet.report');
 
 });
 
