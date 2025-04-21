@@ -20,9 +20,6 @@ Route::get('/selectrole', function () {
 Route::get('/selectrole/redirect', [App\Http\Controllers\Auth\LoginController::class, 'loginSelectRole'])->name('login.select.role');
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
 Route::controller(App\Http\Controllers\Auth\RegisterController::class)->group(function () {
 
     Route::get('adopter/register', 'displayAdopterRegisterForm')->name('adopter.register.form');

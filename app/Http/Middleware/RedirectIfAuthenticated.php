@@ -21,10 +21,6 @@ class RedirectIfAuthenticated
         if ($guard == 'organization' && Auth::guard($guard)->check()) {
             return redirect('organization/home');
         }
-        if (Auth::guard($guard)->check()) {
-            return redirect('/home');
-        }
-
         return $next($request);
     }
 }

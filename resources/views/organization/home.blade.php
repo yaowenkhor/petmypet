@@ -85,6 +85,30 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <th class="bg-light">Approval History</th>
+                                        <td>
+                                            @if(isset($user->organization->approvals) && count($user->organization->approvals) > 0)
+                                                <ul class="list-group">
+                                                    @foreach($user->organization->approvals as $approval)
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <span class="fw-bold">{{ ucfirst($approval->status ?? 'Unknown') }}</span>
+                                                                @if(isset($approval->message))
+                                                                    <p class="mb-0 text-muted">{{ $approval->message }}</p>
+                                                                @endif
+                                                            </div>
+                                                            @if(isset($approval->created_at))
+                                                                <span class="badge bg-secondary rounded-pill">{{ \Carbon\Carbon::parse($approval->created_at)->format('Y-m-d H:i') }}</span>
+                                                            @endif
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @else
+                                                <span class="text-muted">No approval history available</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th class="bg-light">Pet Count</th>
                                         <td>
                                             <div class="d-flex justify-content-between align-items-center w-100">
