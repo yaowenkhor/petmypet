@@ -39,16 +39,24 @@
                         @if ($user->adopter && $user->adopter->application->isEmpty())
                             <p class="text-muted">You have not submitted any adoption applications yet.</p>
                         @else
-                            <ul class="list-group">
-                                @foreach ($user->adopter->application as $app)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span>Pet: {{ $app->pet->name ?? 'Pet' }}</span>
-                                        <span class="badge {{ $app->status == 'pending' ? 'bg-warning text-dark' : 'bg-success' }}">
+                        <ul class="list-group">
+                            @foreach ($user->adopter->application as $app)
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="mb-0">Pet: {{ $app->pet->name ?? 'Pet' }}</h6>
+                                        <span class="badge {{ $app->status == 'pending' ? 'bg-warning text-dark' : ($app->status == 'approved' ? 'bg-success' : 'bg-danger') }}">
                                             {{ ucfirst($app->status) }}
                                         </span>
-                                    </li>
-                                @endforeach
-                            </ul>
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="mb-0"><strong>Organization's Message:</strong></p>
+                                        <p class="text-muted mb-0 border-top pt-2">
+                                            {{$app->decision_message ?? 'No message provided'}}
+                                        </p>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                         @endif
                     </div>
                 </div>

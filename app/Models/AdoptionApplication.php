@@ -20,7 +20,7 @@ class AdoptionApplication extends Model
 
     public function adopter()
     {
-        return $this->belongsTo(User::class, 'adopter_id');
+        return $this->belongsTo(Adopter::class, 'adopter_id');
     }
 
     public function pet()

@@ -19,6 +19,7 @@ class AdopterController extends Controller
     public function index()
     {
         $user = Auth::user()->load('adopter.application');
+        //return response()->json($user); 
         return view("adopter.home", compact("user"));
     }
 
@@ -44,7 +45,7 @@ class AdopterController extends Controller
 
             $organization = $pet->organization;
             $organization_id = $organization->id;
-            $data['adopter_id'] = $user->id;
+            $data['adopter_id'] = $user->adopter->id;
             $data['pet_id'] = $pet->id;
             $data['organization_id'] = $organization_id;
             $data['question'] = $request->question;
