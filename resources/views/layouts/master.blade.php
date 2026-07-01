@@ -5,15 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1">
     <title>@yield('title', 'PetMyPet')</title>
-    <!-- Add Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Your custom CSS should come after Bootstrap -->
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     @yield('page-specific-css')
 </head>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
 <body>
+
+    <div id="app">
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #6a0dad;">
@@ -70,6 +68,11 @@
     <main class="py-4">
         @yield('content')
     </main>
+
+    </div>
+
+    <script src="{{ mix('js/app.js') }}" defer></script>
+    @yield('page-specific-js')
 
 </body>
 
