@@ -45,15 +45,16 @@
                             <div class="row">
                                 @foreach ($pets as $pet)
                                     <div class="col-md-6 mb-4">
-                                        <div class="card mb-3 shadow" style="max-width: 540px;">
-                                            <div class="row g-0">
-                                                <div class="col-md-4">
+                                        <div class="card mb-3 shadow overflow-hidden"
+                                            style="max-width: 540px; height: 220px; min-height: 220px;">
+                                            <div class="row g-0 h-100 align-items-stretch">
+                                                <div class="col-md-4 p-0" style="height: 220px;">
                                                     <img src="{{ asset('storage/' . $pet->images->first()->image_path) }}"
-                                                        class="img-fluid rounded-start" alt="Pet Image"
-                                                        style="height: 100%; width: 100%; object-fit: cover;">
+                                                        class="img-fluid rounded-start w-100 h-100" alt="Pet Image"
+                                                        style="object-fit: cover;">
                                                 </div>
-                                                <div class="col-md-8">
-                                                    <div class="card-body">
+                                                <div class="col-md-8" style="height: 220px;">
+                                                    <div class="card-body h-100 d-flex flex-column justify-content-between overflow-hidden">
                                                         <h5 class="card-title">{{ $pet->name }}</h5>
                                                         <p class="card-text">
                                                             <strong>Species:</strong> {{ ucfirst($pet->species) }}<br>

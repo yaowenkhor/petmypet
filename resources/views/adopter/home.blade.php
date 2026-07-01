@@ -39,24 +39,31 @@
                         @if ($user->adopter && $user->adopter->application->isEmpty())
                             <p class="text-muted">You have not submitted any adoption applications yet.</p>
                         @else
-                        <ul class="list-group">
-                            @foreach ($user->adopter->application as $app)
-                                <li class="list-group-item">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h6 class="mb-0">Pet: {{ $app->pet->name ?? 'Pet' }}</h6>
-                                        <span class="badge {{ $app->status == 'pending' ? 'bg-warning text-dark' : ($app->status == 'approved' ? 'bg-success' : 'bg-danger') }}">
-                                            {{ ucfirst($app->status) }}
-                                        </span>
+                            <div class="list-group list-group-flush">
+                                @foreach ($user->adopter->application as $app)
+                                    <div class="list-group-item rounded-3 mb-3 border shadow-sm">
+                                        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                                            <div>
+                                                <h6 class="mb-1">{{ $app->pet->name ?? 'Pet' }}</h6>
+                                                <div class="text-muted small">
+                                                    <strong>Organization:</strong> {{ $app->pet->organization->details }}
+                                                </div>
+                                            </div>
+
+                                            <span class="badge px-3 py-2 rounded-pill {{ $app->status == 'pending' ? 'bg-warning text-dark' : ($app->status == 'approved' ? 'bg-success' : 'bg-danger') }}">
+                                                {{ ucfirst($app->status) }}
+                                            </span>
+                                        </div>
+
+                                        <div class="mt-3 pt-3 border-top">
+                                            <p class="mb-1 small text-muted fw-semibold">Organization's Message</p>
+                                            <p class="mb-0 text-secondary">
+                                                {{ $app->decision_message ?? 'No message provided' }}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="mt-2">
-                                        <p class="mb-0"><strong>Organization's Message:</strong></p>
-                                        <p class="text-muted mb-0 border-top pt-2">
-                                            {{$app->decision_message ?? 'No message provided'}}
-                                        </p>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
+                                @endforeach
+                            </div>
                         @endif
                     </div>
                 </div>

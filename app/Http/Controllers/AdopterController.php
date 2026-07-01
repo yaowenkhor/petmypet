@@ -28,12 +28,13 @@ class AdopterController extends Controller
     {
         $user = Auth::user();
         $pet = Pet::findOrFail($id);
+        $adopter = $user->adopter;
 
         if ($pet->status != 'available') {
             return redirect()->back()->with('error', 'This pet is not available for adoption.');
         }
 
-        $existingApplication = AdoptionApplication::where('adopter_id', $user->id)
+        $existingApplication = AdoptionApplication::where('adopter_id', $adopter->id)
             ->where('pet_id', $id)
             ->first();
 
@@ -45,7 +46,7 @@ class AdopterController extends Controller
 
             $organization = $pet->organization;
             $organization_id = $organization->id;
-            $data['adopter_id'] = $user->adopter->id;
+            $data['adopter_id'] = $adopter->id;
             $data['pet_id'] = $pet->id;
             $data['organization_id'] = $organization_id;
             $data['question'] = $request->question;

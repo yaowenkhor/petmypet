@@ -43,7 +43,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $request->pet->name ?? 'N/A' }}</td>
                                 <td>
-                                    {{ $request->adopter->name }}
+                                    {{ $request->adopter->user->name }}
                                 </td>
                                 <td>{{ $request->question ?? 'No reason provided' }}</td>
                                 <td>

@@ -73,14 +73,16 @@
                                                 <span class="badge {{ $badgeClass }} px-3 py-2">
                                                     {{ ucfirst($status) }}
                                                 </span>
-
+                                                @if (!$status === 'approved')
                                                 <form action="{{ route('organization.reapply') }}" method="POST"
                                                     class="ms-3">
                                                     @csrf
                                                     <button type="submit" class="btn btn-outline-secondary btn-sm">
                                                         Reapply
                                                     </button>
-                                                </form>
+                                                </form>                                               
+                                                @endif
+
                                             </div>
                                         </td>
                                     </tr>
